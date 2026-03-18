@@ -1,0 +1,615 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		AA000001 /* MealDailyPlannerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000001; };
+		AA000002 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000002; };
+		AA000003 /* DailyPlanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000003; };
+		AA000004 /* MealSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000004; };
+		AA000005 /* CookingFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000005; };
+		AA000006 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000006; };
+		AA000007 /* FamilyMemberRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000007; };
+		AA000008 /* IngredientInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000008; };
+		AA000009 /* ScalingInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000009; };
+		AA000010 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000010; };
+		AA000011 /* FamilyMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000011; };
+		AA000012 /* Meal.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000012; };
+		AA000013 /* DailyPlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000013; };
+		AA000014 /* Ingredient.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000014; };
+		AA000015 /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000015; };
+		AA000016 /* DailyPlanViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000016; };
+		AA000017 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000017; };
+		AA000018 /* MealPlanGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000018; };
+		AA000019 /* RecipeDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000019; };
+		AA000020 /* CookingFlowGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000020; };
+		AA000021 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000021; };
+		AA000022 /* AppTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000022; };
+		AA000023 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AB000023; };
+		AA000024 /* SharedTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000024; };
+		AA000030 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB000030; };
+		AA000031 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB000031; };
+		AA000032 /* MealPlannerWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000032; };
+		AA000033 /* MealPlannerWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000033; };
+		AA000034 /* SmallMealWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000034; };
+		AA000035 /* MediumMealWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000035; };
+		AA000036 /* LargeMealWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000036; };
+		AA000037 /* SharedTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000024; };
+		AA000038 /* MealPlannerWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = AC000002; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		AD000001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AE000001;
+			proxyType = 1;
+			remoteGlobalIDString = AC000002A;
+			remoteInfo = MealPlannerWidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		AF000001 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				AA000038 /* MealPlannerWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		AB000001 /* MealDailyPlannerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealDailyPlannerApp.swift; sourceTree = "<group>"; };
+		AB000002 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		AB000003 /* DailyPlanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyPlanView.swift; sourceTree = "<group>"; };
+		AB000004 /* MealSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealSectionView.swift; sourceTree = "<group>"; };
+		AB000005 /* CookingFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookingFlowView.swift; sourceTree = "<group>"; };
+		AB000006 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		AB000007 /* FamilyMemberRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyMemberRow.swift; sourceTree = "<group>"; };
+		AB000008 /* IngredientInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientInputView.swift; sourceTree = "<group>"; };
+		AB000009 /* ScalingInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScalingInfoView.swift; sourceTree = "<group>"; };
+		AB000010 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
+		AB000011 /* FamilyMember.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyMember.swift; sourceTree = "<group>"; };
+		AB000012 /* Meal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Meal.swift; sourceTree = "<group>"; };
+		AB000013 /* DailyPlan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyPlan.swift; sourceTree = "<group>"; };
+		AB000014 /* Ingredient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ingredient.swift; sourceTree = "<group>"; };
+		AB000015 /* Recipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipe.swift; sourceTree = "<group>"; };
+		AB000016 /* DailyPlanViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyPlanViewModel.swift; sourceTree = "<group>"; };
+		AB000017 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
+		AB000018 /* MealPlanGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealPlanGenerator.swift; sourceTree = "<group>"; };
+		AB000019 /* RecipeDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeDatabase.swift; sourceTree = "<group>"; };
+		AB000020 /* CookingFlowGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookingFlowGenerator.swift; sourceTree = "<group>"; };
+		AB000021 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
+		AB000022 /* AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
+		AB000023 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		AB000024 /* SharedTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedTypes.swift; sourceTree = "<group>"; };
+		AB000030 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		AB000031 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		AB000032 /* MealPlannerWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealPlannerWidget.swift; sourceTree = "<group>"; };
+		AB000033 /* MealPlannerWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealPlannerWidgetBundle.swift; sourceTree = "<group>"; };
+		AB000034 /* SmallMealWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallMealWidget.swift; sourceTree = "<group>"; };
+		AB000035 /* MediumMealWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediumMealWidget.swift; sourceTree = "<group>"; };
+		AB000036 /* LargeMealWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeMealWidget.swift; sourceTree = "<group>"; };
+		AC000001 /* MealDailyPlanner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MealDailyPlanner.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AC000002 /* MealPlannerWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = MealPlannerWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		AB000040 /* MealDailyPlanner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MealDailyPlanner.entitlements; sourceTree = "<group>"; };
+		AB000041 /* MealPlannerWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MealPlannerWidgetExtension.entitlements; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B0000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B0000002 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA000030 /* WidgetKit.framework in Frameworks */,
+				AA000031 /* SwiftUI.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		B1000001 /* Root */ = {
+			isa = PBXGroup;
+			children = (
+				B1000002 /* MealDailyPlanner */,
+				B1000010 /* MealPlannerWidget */,
+				B1000011 /* Shared */,
+				B1000012 /* Frameworks */,
+				B1000013 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		B1000002 /* MealDailyPlanner */ = {
+			isa = PBXGroup;
+			children = (
+				AB000040 /* MealDailyPlanner.entitlements */,
+				B1000003 /* App */,
+				B1000004 /* Models */,
+				B1000005 /* Views */,
+				B1000006 /* ViewModels */,
+				B1000007 /* Services */,
+				B1000008 /* Storage */,
+				B1000009 /* Theme */,
+				AB000023 /* Assets.xcassets */,
+			);
+			path = MealDailyPlanner;
+			sourceTree = "<group>";
+		};
+		B1000003 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				AB000001 /* MealDailyPlannerApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		B1000004 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				AB000010 /* UserProfile.swift */,
+				AB000011 /* FamilyMember.swift */,
+				AB000012 /* Meal.swift */,
+				AB000013 /* DailyPlan.swift */,
+				AB000014 /* Ingredient.swift */,
+				AB000015 /* Recipe.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		B1000005 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				AB000002 /* MainTabView.swift */,
+				AB000003 /* DailyPlanView.swift */,
+				AB000004 /* MealSectionView.swift */,
+				AB000005 /* CookingFlowView.swift */,
+				AB000006 /* ProfileView.swift */,
+				AB000007 /* FamilyMemberRow.swift */,
+				AB000008 /* IngredientInputView.swift */,
+				AB000009 /* ScalingInfoView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		B1000006 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				AB000016 /* DailyPlanViewModel.swift */,
+				AB000017 /* ProfileViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		B1000007 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				AB000018 /* MealPlanGenerator.swift */,
+				AB000019 /* RecipeDatabase.swift */,
+				AB000020 /* CookingFlowGenerator.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		B1000008 /* Storage */ = {
+			isa = PBXGroup;
+			children = (
+				AB000021 /* StorageManager.swift */,
+			);
+			path = Storage;
+			sourceTree = "<group>";
+		};
+		B1000009 /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				AB000022 /* AppTheme.swift */,
+			);
+			path = Theme;
+			sourceTree = "<group>";
+		};
+		B1000010 /* MealPlannerWidget */ = {
+			isa = PBXGroup;
+			children = (
+				AB000041 /* MealPlannerWidgetExtension.entitlements */,
+				AB000032 /* MealPlannerWidget.swift */,
+				AB000033 /* MealPlannerWidgetBundle.swift */,
+				AB000034 /* SmallMealWidget.swift */,
+				AB000035 /* MediumMealWidget.swift */,
+				AB000036 /* LargeMealWidget.swift */,
+			);
+			path = MealPlannerWidget;
+			sourceTree = "<group>";
+		};
+		B1000011 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				AB000024 /* SharedTypes.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		B1000012 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AB000030 /* WidgetKit.framework */,
+				AB000031 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B1000013 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AC000001 /* MealDailyPlanner.app */,
+				AC000002 /* MealPlannerWidgetExtension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		AC000001A /* MealDailyPlanner */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B3000001;
+			buildPhases = (
+				B4000001 /* Sources */,
+				B0000001 /* Frameworks */,
+				B5000001 /* Resources */,
+				AF000001 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AD000002 /* PBXTargetDependency */,
+			);
+			name = MealDailyPlanner;
+			productName = MealDailyPlanner;
+			productReference = AC000001;
+			productType = "com.apple.product-type.application";
+		};
+		AC000002A /* MealPlannerWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B3000002;
+			buildPhases = (
+				B4000002 /* Sources */,
+				B0000002 /* Frameworks */,
+				B5000002 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MealPlannerWidgetExtension;
+			productName = MealPlannerWidgetExtension;
+			productReference = AC000002;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		AE000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					AC000001A = {
+						CreatedOnToolsVersion = 16.0;
+					};
+					AC000002A = {
+						CreatedOnToolsVersion = 16.0;
+					};
+				};
+			};
+			buildConfigurationList = B3000003;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = B1000001;
+			productRefGroup = B1000013;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				AC000001A /* MealDailyPlanner */,
+				AC000002A /* MealPlannerWidgetExtension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B5000001 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA000023 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B5000002 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B4000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA000001 /* MealDailyPlannerApp.swift in Sources */,
+				AA000002 /* MainTabView.swift in Sources */,
+				AA000003 /* DailyPlanView.swift in Sources */,
+				AA000004 /* MealSectionView.swift in Sources */,
+				AA000005 /* CookingFlowView.swift in Sources */,
+				AA000006 /* ProfileView.swift in Sources */,
+				AA000007 /* FamilyMemberRow.swift in Sources */,
+				AA000008 /* IngredientInputView.swift in Sources */,
+				AA000009 /* ScalingInfoView.swift in Sources */,
+				AA000010 /* UserProfile.swift in Sources */,
+				AA000011 /* FamilyMember.swift in Sources */,
+				AA000012 /* Meal.swift in Sources */,
+				AA000013 /* DailyPlan.swift in Sources */,
+				AA000014 /* Ingredient.swift in Sources */,
+				AA000015 /* Recipe.swift in Sources */,
+				AA000016 /* DailyPlanViewModel.swift in Sources */,
+				AA000017 /* ProfileViewModel.swift in Sources */,
+				AA000018 /* MealPlanGenerator.swift in Sources */,
+				AA000019 /* RecipeDatabase.swift in Sources */,
+				AA000020 /* CookingFlowGenerator.swift in Sources */,
+				AA000021 /* StorageManager.swift in Sources */,
+				AA000022 /* AppTheme.swift in Sources */,
+				AA000024 /* SharedTypes.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B4000002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA000032 /* MealPlannerWidget.swift in Sources */,
+				AA000033 /* MealPlannerWidgetBundle.swift in Sources */,
+				AA000034 /* SmallMealWidget.swift in Sources */,
+				AA000035 /* MediumMealWidget.swift in Sources */,
+				AA000036 /* LargeMealWidget.swift in Sources */,
+				AA000037 /* SharedTypes.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		AD000002 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AC000002A;
+			targetProxy = AD000001;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		B6000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		B6000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_VERSION = 5.0;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		B6000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = MealDailyPlanner/MealDailyPlanner.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Meal Planner";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mealdailyplanner.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B6000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = MealDailyPlanner/MealDailyPlanner.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Meal Planner";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mealdailyplanner.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		B6000005 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = MealPlannerWidget/MealPlannerWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = MealPlannerWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mealdailyplanner.app.widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B6000006 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = MealPlannerWidget/MealPlannerWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = MealPlannerWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mealdailyplanner.app.widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B3000001 /* Build configuration list for PBXNativeTarget "MealDailyPlanner" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B6000003 /* Debug */,
+				B6000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B3000002 /* Build configuration list for PBXNativeTarget "MealPlannerWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B6000005 /* Debug */,
+				B6000006 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B3000003 /* Build configuration list for PBXProject "MealDailyPlanner" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B6000001 /* Debug */,
+				B6000002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+	};
+	rootObject = AE000001 /* Project object */;
+}
