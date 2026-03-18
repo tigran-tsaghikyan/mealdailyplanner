@@ -2,30 +2,20 @@ import SwiftUI
 import WidgetKit
 
 struct MediumMealWidgetView: View {
-    let entry: MealWidgetEntry
+    let meal: MealData
+    let page: Int
 
     var body: some View {
-        if entry.isEmpty {
-            HStack {
-                VStack(spacing: 8) {
-                    Image(systemName: "fork.knife")
-                        .font(.title2)
-                    Text("Set up your plan")
-                        .font(.caption)
-                }
-                .foregroundColor(.secondary)
-                .frame(maxWidth: .infinity)
-            }
-        } else {
+        VStack(spacing: 0) {
             HStack(spacing: 12) {
-                // Left: meal info
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(entry.mealType.rawValue.uppercased())
+                    Text(meal.label)
                         .font(.system(size: 11, weight: .bold))
-                        .foregroundColor(.secondary)
+                        .foregroundStyle(Color.gray)
 
-                    Text(entry.mealTitle)
+                    Text(meal.title)
                         .font(.system(size: 15, weight: .bold))
+                        .foregroundStyle(Color(.label))
                         .lineLimit(2)
 
                     Spacer()
@@ -33,31 +23,34 @@ struct MediumMealWidgetView: View {
                     HStack(spacing: 4) {
                         Image(systemName: "clock")
                             .font(.system(size: 10))
-                        Text("\(entry.prepTime) min")
+                        Text("\(meal.prepTime) min")
                             .font(.system(size: 11))
                     }
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(Color.gray)
                 }
 
                 Divider()
 
-                // Right: key ingredients
                 VStack(alignment: .leading, spacing: 3) {
-                    ForEach(entry.ingredients.prefix(3)) { ingredient in
+                    ForEach(meal.ingredients.prefix(3)) { ingredient in
                         HStack(spacing: 4) {
                             Text(ingredient.name)
                                 .font(.system(size: 12))
+                                .foregroundStyle(Color(.label))
                                 .lineLimit(1)
                             Spacer()
                             Text(ingredient.scaled(for: 1.0))
                                 .font(.system(size: 11))
-                                .foregroundColor(.secondary)
+                                .foregroundStyle(Color.gray)
                         }
                     }
                     Spacer()
                 }
                 .frame(maxWidth: .infinity)
             }
+
+            PageDots(currentPage: page)
+                .padding(.top, 4)
         }
     }
 }

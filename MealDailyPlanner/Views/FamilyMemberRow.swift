@@ -3,13 +3,30 @@ import SwiftUI
 struct FamilyMemberRow: View {
     let member: FamilyMember
     let onToggle: () -> Void
+    let onRename: (String) -> Void
+
+    @State private var isEditing = false
+    @State private var editText = ""
 
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 2) {
-                Text(member.name)
+                if isEditing {
+                    TextField("Name", text: $editText, onCommit: {
+                        onRename(editText)
+                        isEditing = false
+                    })
                     .font(AppTheme.bodyFont)
-                    .foregroundColor(AppTheme.primary)
+                    .textFieldStyle(.plain)
+                } else {
+                    Text(member.name)
+                        .font(AppTheme.bodyFont)
+                        .foregroundColor(AppTheme.primary)
+                        .onTapGesture {
+                            editText = member.name
+                            isEditing = true
+                        }
+                }
                 Text(member.isChild ? "Child (x0.5)" : "Adult (x1.0)")
                     .font(AppTheme.captionFont)
                     .foregroundColor(AppTheme.secondary)

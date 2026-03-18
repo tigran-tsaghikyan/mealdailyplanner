@@ -9,41 +9,43 @@ struct DailyPlanView: View {
                 ProgressView()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else if let plan = viewModel.dailyPlan {
-                ScrollView {
-                    VStack(alignment: .leading, spacing: AppTheme.spacingLG) {
-                        // Date
+                ScrollView(showsIndicators: false) {
+                    VStack(alignment: .leading, spacing: 0) {
+                        // Date header
                         Text(plan.formattedDate)
-                            .font(AppTheme.headlineFont)
+                            .font(AppTheme.captionFont)
                             .foregroundColor(AppTheme.secondary)
-                            .padding(.top, AppTheme.spacingSM)
+                            .padding(.horizontal, AppTheme.spacingMD)
+                            .padding(.top, AppTheme.spacingMD)
+                            .padding(.bottom, AppTheme.spacingLG)
 
-                        // Meals
-                        if let breakfast = plan.breakfast {
-                            MealSectionView(meal: breakfast)
-                            Divider()
+                        // Meal cards
+                        VStack(spacing: AppTheme.spacingMD) {
+                            if let breakfast = plan.breakfast {
+                                MealSectionView(meal: breakfast)
+                            }
+                            if let lunch = plan.lunch {
+                                MealSectionView(meal: lunch)
+                            }
+                            if let dinner = plan.dinner {
+                                MealSectionView(meal: dinner)
+                            }
+
+                            CookingFlowView(
+                                cookingFlow: plan.cookingFlow,
+                                totalTime: plan.totalCookingTimeMinutes
+                            )
                         }
-
-                        if let lunch = plan.lunch {
-                            MealSectionView(meal: lunch)
-                            Divider()
-                        }
-
-                        if let dinner = plan.dinner {
-                            MealSectionView(meal: dinner)
-                            Divider()
-                        }
-
-                        // Unified Cooking Plan
-                        CookingFlowView(
-                            cookingFlow: plan.cookingFlow,
-                            totalTime: plan.totalCookingTimeMinutes
-                        )
+                        .padding(.horizontal, AppTheme.spacingMD)
                     }
-                    .padding(.horizontal, AppTheme.spacingMD)
-                    .padding(.bottom, AppTheme.spacingXL)
+                    .padding(.bottom, AppTheme.spacingXL + 20)
                 }
+                .background(Color(.secondarySystemBackground))
             } else {
                 VStack(spacing: AppTheme.spacingMD) {
+                    Image(systemName: "fork.knife.circle")
+                        .font(.system(size: 48))
+                        .foregroundColor(AppTheme.secondary)
                     Text("No plan yet")
                         .font(AppTheme.titleFont)
                     Text("Set up your profile to get started")

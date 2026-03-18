@@ -1,0 +1,41 @@
+{
+  "identifier" : "com.mealdailyplanner.app.storekit",
+  "type" : "local",
+  "version" : 3,
+  "localizations" : [],
+  "settings" : {
+    "_applicationInternalID" : "0",
+    "_developerTeamID" : ""
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "group.mealdailyplanner",
+      "localizations" : [],
+      "name" : "Meal Planner Pro",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [],
+          "codeOffers" : [],
+          "displayPrice" : "3.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "001",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Unlimited daily meal plans",
+              "displayName" : "Monthly Plan",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "com.mealdailyplanner.app.monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Monthly Subscription",
+          "subscriptionGroupID" : "group.mealdailyplanner",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : []
+        }
+      ]
+    }
+  ]
+}

@@ -31,6 +31,8 @@
 		AA000022 /* AppTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000022; };
 		AA000023 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AB000023; };
 		AA000024 /* SharedTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000024; };
+		AA000025 /* SubscriptionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000025; };
+		AA000026 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000026; };
 		AA000030 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB000030; };
 		AA000031 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB000031; };
 		AA000032 /* MealPlannerWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000032; };
@@ -91,6 +93,8 @@
 		AB000022 /* AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
 		AB000023 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AB000024 /* SharedTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedTypes.swift; sourceTree = "<group>"; };
+		AB000025 /* SubscriptionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionManager.swift; sourceTree = "<group>"; };
+		AB000026 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
 		AB000030 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		AB000031 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		AB000032 /* MealPlannerWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealPlannerWidget.swift; sourceTree = "<group>"; };
@@ -102,6 +106,8 @@
 		AC000002 /* MealPlannerWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = MealPlannerWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB000040 /* MealDailyPlanner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MealDailyPlanner.entitlements; sourceTree = "<group>"; };
 		AB000041 /* MealPlannerWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MealPlannerWidgetExtension.entitlements; sourceTree = "<group>"; };
+		AB000042 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AB000043 /* MealDailyPlanner.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = MealDailyPlanner.storekit; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,6 +153,7 @@
 				B1000008 /* Storage */,
 				B1000009 /* Theme */,
 				AB000023 /* Assets.xcassets */,
+				AB000043 /* MealDailyPlanner.storekit */,
 			);
 			path = MealDailyPlanner;
 			sourceTree = "<group>";
@@ -183,6 +190,7 @@
 				AB000007 /* FamilyMemberRow.swift */,
 				AB000008 /* IngredientInputView.swift */,
 				AB000009 /* ScalingInfoView.swift */,
+				AB000026 /* PaywallView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -202,6 +210,7 @@
 				AB000018 /* MealPlanGenerator.swift */,
 				AB000019 /* RecipeDatabase.swift */,
 				AB000020 /* CookingFlowGenerator.swift */,
+				AB000025 /* SubscriptionManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -225,6 +234,7 @@
 		B1000010 /* MealPlannerWidget */ = {
 			isa = PBXGroup;
 			children = (
+				AB000042 /* Info.plist */,
 				AB000041 /* MealPlannerWidgetExtension.entitlements */,
 				AB000032 /* MealPlannerWidget.swift */,
 				AB000033 /* MealPlannerWidgetBundle.swift */,
@@ -383,6 +393,8 @@
 				AA000021 /* StorageManager.swift in Sources */,
 				AA000022 /* AppTheme.swift in Sources */,
 				AA000024 /* SharedTypes.swift in Sources */,
+				AA000025 /* SubscriptionManager.swift in Sources */,
+				AA000026 /* PaywallView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -533,9 +545,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = MealPlannerWidget;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = MealPlannerWidget/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -559,9 +570,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = MealPlannerWidget;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = MealPlannerWidget/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

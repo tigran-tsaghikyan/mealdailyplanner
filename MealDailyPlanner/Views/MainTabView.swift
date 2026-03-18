@@ -3,27 +3,35 @@ import SwiftUI
 struct MainTabView: View {
     @StateObject private var dailyPlanVM = DailyPlanViewModel()
     @StateObject private var profileVM = ProfileViewModel()
+    @StateObject private var subscriptionManager = SubscriptionManager.shared
 
     var body: some View {
-        TabView {
-            NavigationStack {
-                DailyPlanView(viewModel: dailyPlanVM)
-                    .navigationTitle("Today")
-            }
-            .tabItem {
-                Image(systemName: "fork.knife")
-                Text("Today")
-            }
+        Group {
+            if subscriptionManager.canAccessApp {
+                TabView {
+                    DailyPlanView(viewModel: dailyPlanVM)
+                        .tabItem {
+                            Image(systemName: "fork.knife")
+                            Text("Today")
+                        }
 
-            NavigationStack {
-                ProfileView(viewModel: profileVM)
-                    .navigationTitle("Profile")
-            }
-            .tabItem {
-                Image(systemName: "person.crop.circle")
-                Text("Profile")
+                    NavigationStack {
+                        ProfileView(viewModel: profileVM, subscriptionManager: subscriptionManager)
+                            .navigationTitle("Profile")
+                    }
+                    .tabItem {
+                        Image(systemName: "person.crop.circle")
+                        Text("Profile")
+                    }
+                }
+                .tint(AppTheme.primary)
+            } else {
+                PaywallView(subscriptionManager: subscriptionManager)
             }
         }
-        .tint(AppTheme.primary)
+        .task {
+            await subscriptionManager.loadProducts()
+            await subscriptionManager.checkStatus()
+        }
     }
 }

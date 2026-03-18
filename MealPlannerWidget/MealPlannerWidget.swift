@@ -2,115 +2,142 @@ import WidgetKit
 import SwiftUI
 import AppIntents
 
-// MARK: - Configuration Intent
+// MARK: - Page Navigation Intent
 
-struct MealTypeIntent: WidgetConfigurationIntent {
-    static var title: LocalizedStringResource = "Select Meal"
-    static var description: IntentDescription = "Choose which meal to display"
+struct CycleMealPageIntent: AppIntent {
+    static var title: LocalizedStringResource = "Next Meal"
+    static var description: IntentDescription = "Show the next meal"
 
-    @Parameter(title: "Meal Type", default: .breakfast)
-    var mealType: MealTypeOption
+    func perform() async throws -> some IntentResult {
+        let defaults = UserDefaults(suiteName: "group.com.mealdailyplanner.app")
+        let current = defaults?.integer(forKey: "widgetPage") ?? 0
+        let next = (current + 1) % 3
+        defaults?.set(next, forKey: "widgetPage")
+        WidgetCenter.shared.reloadTimelines(ofKind: "MealPlannerWidget")
+        return .result()
+    }
 }
 
-enum MealTypeOption: String, AppEnum {
-    case breakfast = "Breakfast"
-    case lunch = "Lunch"
-    case dinner = "Dinner"
+struct GoToPageIntent: AppIntent {
+    static var title: LocalizedStringResource = "Go To Meal"
+    static var description: IntentDescription = "Show a specific meal"
 
-    static var typeDisplayRepresentation = TypeDisplayRepresentation(name: "Meal Type")
-    static var caseDisplayRepresentations: [MealTypeOption: DisplayRepresentation] = [
-        .breakfast: "Breakfast",
-        .lunch: "Lunch",
-        .dinner: "Dinner"
-    ]
+    @Parameter(title: "Page")
+    var page: Int
+
+    init() { self.page = 0 }
+    init(page: Int) { self.page = page }
+
+    func perform() async throws -> some IntentResult {
+        let defaults = UserDefaults(suiteName: "group.com.mealdailyplanner.app")
+        defaults?.set(page, forKey: "widgetPage")
+        WidgetCenter.shared.reloadTimelines(ofKind: "MealPlannerWidget")
+        return .result()
+    }
 }
 
 // MARK: - Timeline Entry
 
 struct MealWidgetEntry: TimelineEntry {
     let date: Date
-    let mealType: MealTypeOption
-    let mealTitle: String
+    let currentPage: Int // 0=breakfast, 1=lunch, 2=dinner
+    let meals: [MealData] // always 3
+    let isEmpty: Bool
+}
+
+struct MealData {
+    let label: String
+    let title: String
     let ingredients: [MealIngredient]
     let steps: [String]
     let prepTime: Int
-    let isEmpty: Bool
 }
 
 // MARK: - Timeline Provider
 
-struct MealTimelineProvider: AppIntentTimelineProvider {
+struct MealTimelineProvider: TimelineProvider {
     func placeholder(in context: Context) -> MealWidgetEntry {
         MealWidgetEntry(
             date: Date(),
-            mealType: .breakfast,
-            mealTitle: "Scrambled Eggs with Toast",
-            ingredients: [
-                MealIngredient(name: "Eggs", baseGrams: 4, unit: "pcs"),
-                MealIngredient(name: "Bread", baseGrams: 4, unit: "slices"),
+            currentPage: 0,
+            meals: [
+                MealData(label: "Breakfast", title: "Scrambled Eggs", ingredients: [], steps: [], prepTime: 7),
+                MealData(label: "Lunch", title: "Chicken Rice Bowl", ingredients: [], steps: [], prepTime: 12),
+                MealData(label: "Dinner", title: "Salmon with Greens", ingredients: [], steps: [], prepTime: 15),
             ],
-            steps: ["Whisk eggs", "Cook in butter", "Toast bread"],
-            prepTime: 7,
             isEmpty: false
         )
     }
 
-    func snapshot(for configuration: MealTypeIntent, in context: Context) async -> MealWidgetEntry {
-        loadEntry(for: configuration)
+    func getSnapshot(in context: Context, completion: @escaping (MealWidgetEntry) -> Void) {
+        completion(loadEntry())
     }
 
-    func timeline(for configuration: MealTypeIntent, in context: Context) async -> Timeline<MealWidgetEntry> {
-        let entry = loadEntry(for: configuration)
-
-        // Refresh at midnight
+    func getTimeline(in context: Context, completion: @escaping (Timeline<MealWidgetEntry>) -> Void) {
+        let entry = loadEntry()
         let calendar = Calendar.current
         let tomorrow = calendar.startOfDay(for: calendar.date(byAdding: .day, value: 1, to: Date()) ?? Date())
-        return Timeline(entries: [entry], policy: .after(tomorrow))
+        completion(Timeline(entries: [entry], policy: .after(tomorrow)))
     }
 
-    private func loadEntry(for configuration: MealTypeIntent) -> MealWidgetEntry {
+    private func loadEntry() -> MealWidgetEntry {
         let defaults = UserDefaults(suiteName: "group.com.mealdailyplanner.app")
+        let page = defaults?.integer(forKey: "widgetPage") ?? 0
+
         guard let data = defaults?.data(forKey: "dailyPlan"),
               let plan = try? JSONDecoder().decode(DailyPlan.self, from: data) else {
             return MealWidgetEntry(
                 date: Date(),
-                mealType: configuration.mealType,
-                mealTitle: "",
-                ingredients: [],
-                steps: [],
-                prepTime: 0,
+                currentPage: page,
+                meals: [
+                    MealData(label: "Breakfast", title: "", ingredients: [], steps: [], prepTime: 0),
+                    MealData(label: "Lunch", title: "", ingredients: [], steps: [], prepTime: 0),
+                    MealData(label: "Dinner", title: "", ingredients: [], steps: [], prepTime: 0),
+                ],
                 isEmpty: true
             )
         }
 
-        let meal: Meal?
-        switch configuration.mealType {
-        case .breakfast: meal = plan.breakfast
-        case .lunch: meal = plan.lunch
-        case .dinner: meal = plan.dinner
-        }
-
-        guard let m = meal else {
-            return MealWidgetEntry(
-                date: Date(),
-                mealType: configuration.mealType,
-                mealTitle: "",
-                ingredients: [],
-                steps: [],
-                prepTime: 0,
-                isEmpty: true
+        let meals = [plan.breakfast, plan.lunch, plan.dinner].enumerated().map { index, meal -> MealData in
+            let labels = ["Breakfast", "Lunch", "Dinner"]
+            guard let m = meal else {
+                return MealData(label: labels[index], title: "", ingredients: [], steps: [], prepTime: 0)
+            }
+            return MealData(
+                label: labels[index],
+                title: m.title,
+                ingredients: m.ingredients,
+                steps: m.steps,
+                prepTime: m.prepTimeMinutes
             )
         }
 
         return MealWidgetEntry(
             date: plan.date,
-            mealType: configuration.mealType,
-            mealTitle: m.title,
-            ingredients: m.ingredients,
-            steps: m.steps,
-            prepTime: m.prepTimeMinutes,
+            currentPage: page,
+            meals: meals,
             isEmpty: false
         )
+    }
+}
+
+// MARK: - Page Dots
+
+struct PageDots: View {
+    let currentPage: Int
+    let totalPages: Int = 3
+
+    var body: some View {
+        HStack(spacing: 6) {
+            ForEach(0..<totalPages, id: \.self) { index in
+                Button(intent: GoToPageIntent(page: index)) {
+                    Circle()
+                        .fill(index == currentPage ? Color(.label) : Color.gray.opacity(0.4))
+                        .frame(width: 6, height: 6)
+                }
+                .buttonStyle(.plain)
+            }
+        }
     }
 }
 
@@ -120,17 +147,40 @@ struct MealWidgetView: View {
     @Environment(\.widgetFamily) var family
     let entry: MealWidgetEntry
 
+    var currentMeal: MealData {
+        entry.meals[entry.currentPage]
+    }
+
     var body: some View {
-        switch family {
-        case .systemSmall:
-            SmallMealWidgetView(entry: entry)
-        case .systemMedium:
-            MediumMealWidgetView(entry: entry)
-        case .systemLarge:
-            LargeMealWidgetView(entry: entry)
-        default:
-            SmallMealWidgetView(entry: entry)
+        if entry.isEmpty {
+            emptyState
+        } else {
+            Button(intent: CycleMealPageIntent()) {
+                switch family {
+                case .systemSmall:
+                    SmallMealWidgetView(meal: currentMeal, page: entry.currentPage)
+                case .systemMedium:
+                    MediumMealWidgetView(meal: currentMeal, page: entry.currentPage)
+                case .systemLarge:
+                    LargeMealWidgetView(meal: currentMeal, page: entry.currentPage)
+                default:
+                    SmallMealWidgetView(meal: currentMeal, page: entry.currentPage)
+                }
+            }
+            .buttonStyle(.plain)
         }
+    }
+
+    private var emptyState: some View {
+        VStack(spacing: 8) {
+            Image(systemName: "fork.knife")
+                .font(.title2)
+                .foregroundStyle(Color.gray)
+            Text("Set up your plan")
+                .font(.caption)
+                .foregroundStyle(Color.gray)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 
@@ -140,16 +190,12 @@ struct MealPlannerWidget: Widget {
     let kind = "MealPlannerWidget"
 
     var body: some WidgetConfiguration {
-        AppIntentConfiguration(
-            kind: kind,
-            intent: MealTypeIntent.self,
-            provider: MealTimelineProvider()
-        ) { entry in
+        StaticConfiguration(kind: kind, provider: MealTimelineProvider()) { entry in
             MealWidgetView(entry: entry)
-                .containerBackground(.fill.tertiary, for: .widget)
+                .containerBackground(Color(.systemBackground), for: .widget)
         }
         .configurationDisplayName("Meal Planner")
-        .description("View your daily meal plan")
+        .description("Tap to cycle through breakfast, lunch, dinner")
         .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
     }
 }

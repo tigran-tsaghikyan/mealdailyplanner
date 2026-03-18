@@ -2,32 +2,29 @@ import SwiftUI
 import WidgetKit
 
 struct SmallMealWidgetView: View {
-    let entry: MealWidgetEntry
+    let meal: MealData
+    let page: Int
 
     var body: some View {
-        if entry.isEmpty {
-            VStack(spacing: 8) {
-                Image(systemName: "fork.knife")
-                    .font(.title2)
-                Text("Set up your plan")
-                    .font(.caption)
-                    .multilineTextAlignment(.center)
-            }
-            .foregroundColor(.secondary)
-        } else {
-            VStack(alignment: .leading, spacing: 6) {
-                Text(entry.mealType.rawValue.uppercased())
-                    .font(.system(size: 12, weight: .bold))
-                    .foregroundColor(.secondary)
+        VStack(alignment: .leading, spacing: 6) {
+            Text(meal.label)
+                .font(.system(size: 12, weight: .bold))
+                .foregroundStyle(Color.gray)
 
-                Text(entry.mealTitle)
-                    .font(.system(size: 16, weight: .bold))
-                    .lineLimit(3)
-                    .fixedSize(horizontal: false, vertical: true)
+            Text(meal.title)
+                .font(.system(size: 16, weight: .bold))
+                .foregroundStyle(Color(.label))
+                .lineLimit(3)
+                .fixedSize(horizontal: false, vertical: true)
 
+            Spacer()
+
+            HStack {
+                Spacer()
+                PageDots(currentPage: page)
                 Spacer()
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
