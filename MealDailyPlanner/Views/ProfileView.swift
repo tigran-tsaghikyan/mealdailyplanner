@@ -3,6 +3,7 @@ import SwiftUI
 struct ProfileView: View {
     @ObservedObject var viewModel: ProfileViewModel
     @ObservedObject var subscriptionManager: SubscriptionManager
+    @State private var showPaywall = false
 
     var body: some View {
         List {
@@ -11,6 +12,11 @@ struct ProfileView: View {
                 PlanStatusCard(subscriptionManager: subscriptionManager)
                     .listRowInsets(EdgeInsets())
                     .listRowBackground(Color.clear)
+                    .onTapGesture {
+                        if subscriptionManager.status != .pro {
+                            showPaywall = true
+                        }
+                    }
             }
 
             // MARK: - Family Members
@@ -126,6 +132,16 @@ struct ProfileView: View {
             }
         }
         .listStyle(.insetGrouped)
+        .sheet(isPresented: $showPaywall) {
+            NavigationStack {
+                PaywallView(subscriptionManager: subscriptionManager)
+                    .toolbar {
+                        ToolbarItem(placement: .cancellationAction) {
+                            Button("Close") { showPaywall = false }
+                        }
+                    }
+            }
+        }
     }
 }
 
@@ -224,17 +240,27 @@ struct PlanStatusCard: View {
                     .background(AppTheme.primary)
                     .cornerRadius(8)
             } else if subscriptionManager.status == .free {
-                // Trial progress ring
-                ZStack {
-                    Circle()
-                        .stroke(Color(.tertiarySystemFill), lineWidth: 3)
-                        .frame(width: 32, height: 32)
-                    Circle()
-                        .trim(from: 0, to: trialProgress)
-                        .stroke(AppTheme.primary, style: StrokeStyle(lineWidth: 3, lineCap: .round))
-                        .frame(width: 32, height: 32)
-                        .rotationEffect(.degrees(-90))
+                HStack(spacing: 8) {
+                    // Trial progress ring
+                    ZStack {
+                        Circle()
+                            .stroke(Color(.tertiarySystemFill), lineWidth: 3)
+                            .frame(width: 32, height: 32)
+                        Circle()
+                            .trim(from: 0, to: trialProgress)
+                            .stroke(AppTheme.primary, style: StrokeStyle(lineWidth: 3, lineCap: .round))
+                            .frame(width: 32, height: 32)
+                            .rotationEffect(.degrees(-90))
+                    }
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundColor(AppTheme.secondary)
                 }
+            } else {
+                // Expired state
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundColor(AppTheme.secondary)
             }
         }
         .padding(14)
