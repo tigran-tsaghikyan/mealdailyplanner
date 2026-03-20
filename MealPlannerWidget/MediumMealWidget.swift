@@ -49,7 +49,7 @@ struct MediumMealWidgetView: View {
                 .frame(maxWidth: .infinity)
             }
 
-            PageDots(currentPage: page)
+            MealNavigationBar(currentPage: page, compact: false)
                 .padding(.top, 4)
         }
     }

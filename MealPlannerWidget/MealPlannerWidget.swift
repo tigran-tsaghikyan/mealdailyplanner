@@ -2,9 +2,9 @@ import WidgetKit
 import SwiftUI
 import AppIntents
 
-// MARK: - Page Navigation Intent
+// MARK: - Navigation Intents
 
-struct CycleMealPageIntent: AppIntent {
+struct NextMealIntent: AppIntent {
     static var title: LocalizedStringResource = "Next Meal"
     static var description: IntentDescription = "Show the next meal"
 
@@ -13,25 +13,21 @@ struct CycleMealPageIntent: AppIntent {
         let current = defaults?.integer(forKey: "widgetPage") ?? 0
         let next = (current + 1) % 3
         defaults?.set(next, forKey: "widgetPage")
-        WidgetCenter.shared.reloadTimelines(ofKind: "MealPlannerWidget")
+        defaults?.synchronize()
         return .result()
     }
 }
 
-struct GoToPageIntent: AppIntent {
-    static var title: LocalizedStringResource = "Go To Meal"
-    static var description: IntentDescription = "Show a specific meal"
-
-    @Parameter(title: "Page")
-    var page: Int
-
-    init() { self.page = 0 }
-    init(page: Int) { self.page = page }
+struct PreviousMealIntent: AppIntent {
+    static var title: LocalizedStringResource = "Previous Meal"
+    static var description: IntentDescription = "Show the previous meal"
 
     func perform() async throws -> some IntentResult {
         let defaults = UserDefaults(suiteName: "group.com.mealdailyplanner.app")
-        defaults?.set(page, forKey: "widgetPage")
-        WidgetCenter.shared.reloadTimelines(ofKind: "MealPlannerWidget")
+        let current = defaults?.integer(forKey: "widgetPage") ?? 0
+        let prev = (current + 2) % 3 // +2 mod 3 == -1 mod 3
+        defaults?.set(prev, forKey: "widgetPage")
+        defaults?.synchronize()
         return .result()
     }
 }
@@ -82,7 +78,14 @@ struct MealTimelineProvider: TimelineProvider {
 
     private func loadEntry() -> MealWidgetEntry {
         let defaults = UserDefaults(suiteName: "group.com.mealdailyplanner.app")
-        let page = defaults?.integer(forKey: "widgetPage") ?? 0
+
+        // Use manually selected page if set, otherwise default to time-based
+        let page: Int
+        if defaults?.object(forKey: "widgetPage") != nil {
+            page = defaults?.integer(forKey: "widgetPage") ?? 0
+        } else {
+            page = mealPageForCurrentTime()
+        }
 
         guard let data = defaults?.data(forKey: "dailyPlan"),
               let plan = try? JSONDecoder().decode(DailyPlan.self, from: data) else {
@@ -119,24 +122,54 @@ struct MealTimelineProvider: TimelineProvider {
             isEmpty: false
         )
     }
+
+    private func mealPageForCurrentTime() -> Int {
+        let hour = Calendar.current.component(.hour, from: Date())
+        if hour < 12 { return 0 }
+        if hour < 18 { return 1 }
+        return 2
+    }
 }
 
-// MARK: - Page Dots
+// MARK: - Navigation Arrows
 
-struct PageDots: View {
+struct MealNavigationBar: View {
     let currentPage: Int
-    let totalPages: Int = 3
+    let compact: Bool
+
+    private let labels = ["Breakfast", "Lunch", "Dinner"]
 
     var body: some View {
-        HStack(spacing: 6) {
-            ForEach(0..<totalPages, id: \.self) { index in
-                Button(intent: GoToPageIntent(page: index)) {
+        HStack(spacing: 0) {
+            Button(intent: PreviousMealIntent()) {
+                Image(systemName: "chevron.left")
+                    .font(.system(size: compact ? 12 : 14, weight: .semibold))
+                    .foregroundStyle(Color(.label).opacity(0.6))
+                    .frame(width: compact ? 28 : 34, height: compact ? 28 : 34)
+                    .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+
+            Spacer()
+
+            HStack(spacing: 6) {
+                ForEach(0..<3, id: \.self) { index in
                     Circle()
                         .fill(index == currentPage ? Color(.label) : Color.gray.opacity(0.4))
                         .frame(width: 6, height: 6)
                 }
-                .buttonStyle(.plain)
             }
+
+            Spacer()
+
+            Button(intent: NextMealIntent()) {
+                Image(systemName: "chevron.right")
+                    .font(.system(size: compact ? 12 : 14, weight: .semibold))
+                    .foregroundStyle(Color(.label).opacity(0.6))
+                    .frame(width: compact ? 28 : 34, height: compact ? 28 : 34)
+                    .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
         }
     }
 }
@@ -155,19 +188,16 @@ struct MealWidgetView: View {
         if entry.isEmpty {
             emptyState
         } else {
-            Button(intent: CycleMealPageIntent()) {
-                switch family {
-                case .systemSmall:
-                    SmallMealWidgetView(meal: currentMeal, page: entry.currentPage)
-                case .systemMedium:
-                    MediumMealWidgetView(meal: currentMeal, page: entry.currentPage)
-                case .systemLarge:
-                    LargeMealWidgetView(meal: currentMeal, page: entry.currentPage)
-                default:
-                    SmallMealWidgetView(meal: currentMeal, page: entry.currentPage)
-                }
+            switch family {
+            case .systemSmall:
+                SmallMealWidgetView(meal: currentMeal, page: entry.currentPage)
+            case .systemMedium:
+                MediumMealWidgetView(meal: currentMeal, page: entry.currentPage)
+            case .systemLarge:
+                LargeMealWidgetView(meal: currentMeal, page: entry.currentPage)
+            default:
+                SmallMealWidgetView(meal: currentMeal, page: entry.currentPage)
             }
-            .buttonStyle(.plain)
         }
     }
 
@@ -195,7 +225,7 @@ struct MealPlannerWidget: Widget {
                 .containerBackground(Color(.systemBackground), for: .widget)
         }
         .configurationDisplayName("Meal Planner")
-        .description("Tap to cycle through breakfast, lunch, dinner")
+        .description("Shows your daily meals — tap arrows to switch")
         .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
     }
 }

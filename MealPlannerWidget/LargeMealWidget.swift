@@ -62,11 +62,7 @@ struct LargeMealWidgetView: View {
 
             Spacer(minLength: 0)
 
-            HStack {
-                Spacer()
-                PageDots(currentPage: page)
-                Spacer()
-            }
+            MealNavigationBar(currentPage: page, compact: false)
         }
     }
 }
