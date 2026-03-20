@@ -222,7 +222,7 @@ struct PlanStatusCard: View {
                         .font(.system(size: 13))
                         .foregroundColor(AppTheme.secondary)
                 case .pro:
-                    Text("Active subscription")
+                    Text(subscriptionManager.subscriptionExpirationText ?? "Active subscription")
                         .font(.system(size: 13))
                         .foregroundColor(AppTheme.secondary)
                 }

@@ -18,6 +18,7 @@ final class SubscriptionManager: ObservableObject {
     @Published var status: SubscriptionStatus = .free
     @Published var product: Product?
     @Published var isLoading = false
+    @Published var subscriptionExpirationDate: Date?
 
     private var updateTask: Task<Void, Never>?
 
@@ -67,13 +68,23 @@ final class SubscriptionManager: ObservableObject {
         for await result in Transaction.currentEntitlements {
             if case .verified(let transaction) = result,
                transaction.productID == Self.monthlyProductID {
+                subscriptionExpirationDate = transaction.expirationDate
                 status = .pro
                 return
             }
         }
 
         // No active subscription - check trial
+        subscriptionExpirationDate = nil
         status = isTrialActive ? .free : .expired
+    }
+
+    var subscriptionExpirationText: String? {
+        guard let date = subscriptionExpirationDate else { return nil }
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .none
+        return "Renews \(formatter.string(from: date))"
     }
 
     var canAccessApp: Bool {
@@ -106,6 +117,7 @@ final class SubscriptionManager: ObservableObject {
             case .success(let verification):
                 if case .verified(let transaction) = verification {
                     await transaction.finish()
+                    subscriptionExpirationDate = transaction.expirationDate
                     status = .pro
                     return true
                 }
