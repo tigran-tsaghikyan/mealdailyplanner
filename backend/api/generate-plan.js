@@ -68,7 +68,7 @@ Rules:
 - Use metric units (g, ml, tbsp, tsp, pieces)`;
 
   try {
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    const response = await fetch('https://api.openai.com/v1/responses', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -76,13 +76,13 @@ Rules:
       },
       body: JSON.stringify({
         model: 'gpt-4o-mini',
-        messages: [
+        input: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: userPrompt }
         ],
         temperature: 0.85,
-        max_tokens: 2000,
-        response_format: { type: 'json_object' }
+        max_output_tokens: 2000,
+        text: { format: { type: 'json_object' } }
       })
     });
 
@@ -93,7 +93,7 @@ Rules:
     }
 
     const data = await response.json();
-    const content = JSON.parse(data.choices[0].message.content);
+    const content = JSON.parse(data.output[0].content[0].text);
 
     // Validate expected structure
     if (!content.breakfast || !content.lunch || !content.dinner) {
