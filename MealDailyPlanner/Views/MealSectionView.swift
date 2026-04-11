@@ -2,6 +2,7 @@ import SwiftUI
 
 struct MealSectionView: View {
     let meal: Meal
+    var familyMembers: [FamilyMember] = []
 
     private var mealIcon: String {
         switch meal.type {
@@ -111,6 +112,16 @@ struct MealSectionView: View {
             .padding(.horizontal, AppTheme.spacingMD)
             .padding(.top, 12)
             .padding(.bottom, AppTheme.spacingMD)
+
+            // Packaging (only shown when family has more than 1 member)
+            if familyMembers.count > 1 {
+                Rectangle()
+                    .fill(Color(.separator))
+                    .frame(height: 0.5)
+                    .padding(.horizontal, AppTheme.spacingMD)
+
+                MealPackagingView(meal: meal, familyMembers: familyMembers)
+            }
         }
         .background(Color(.systemBackground))
         .cornerRadius(16)

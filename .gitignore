@@ -30,3 +30,13 @@ Pods/
 .DS_Store
 *.swp
 *~.nib
+
+# Claude context (local only)
+CLAUDE.md
+.claude/
+
+# API secrets (never commit to public repo)
+MealDailyPlanner/Config/APIConfig.swift
+
+# Backend dependencies
+backend/node_modules/

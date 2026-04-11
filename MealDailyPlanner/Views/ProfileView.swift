@@ -25,7 +25,11 @@ struct ProfileView: View {
                     FamilyMemberRow(
                         member: member,
                         onToggle: { viewModel.toggleChildStatus(for: member) },
-                        onRename: { viewModel.renameMember(member, to: $0) }
+                        onRename: { viewModel.renameMember(member, to: $0) },
+                        onUpdateNutrition: { nutrition, bodyMetrics in
+                            viewModel.updateNutritionTargets(for: member, nutrition: nutrition, bodyMetrics: bodyMetrics)
+                        },
+                        onClearNutrition: { viewModel.clearNutritionTargets(for: member) }
                     )
                     .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                         if viewModel.canRemoveMember {
@@ -129,6 +133,28 @@ struct ProfileView: View {
                         .font(AppTheme.captionFont)
                         .foregroundColor(AppTheme.secondary)
                 }
+            }
+
+            // MARK: - Meal Preferences
+            Section {
+                ZStack(alignment: .topLeading) {
+                    if viewModel.mealPreferencesText.isEmpty {
+                        Text("e.g. We prefer Mediterranean food, quick meals, no spicy dishes…")
+                            .font(AppTheme.bodyFont)
+                            .foregroundColor(Color(.placeholderText))
+                            .padding(.top, 8)
+                            .padding(.leading, 4)
+                            .allowsHitTesting(false)
+                    }
+                    TextEditor(text: $viewModel.mealPreferencesText)
+                        .font(AppTheme.bodyFont)
+                        .frame(minHeight: 80)
+                }
+            } header: {
+                Text("Meal Preferences")
+            } footer: {
+                Text("Sent to AI to personalise your daily meal plan.")
+                    .font(AppTheme.captionFont)
             }
         }
         .listStyle(.insetGrouped)

@@ -9,6 +9,9 @@ final class ProfileViewModel: ObservableObject {
     @Published var newAllergyText = ""
     @Published var newIngredientText = ""
     @Published var newMemberName = ""
+    @Published var mealPreferencesText: String = "" {
+        didSet { profile.mealPreferences = mealPreferencesText }
+    }
 
     // MARK: - Limits
 
@@ -25,7 +28,9 @@ final class ProfileViewModel: ObservableObject {
     private let storage = StorageManager.shared
 
     init() {
-        self.profile = StorageManager.shared.loadProfile()
+        let saved = StorageManager.shared.loadProfile()
+        self.profile = saved
+        self.mealPreferencesText = saved.mealPreferences
     }
 
     // MARK: - Family Members
@@ -109,6 +114,26 @@ final class ProfileViewModel: ObservableObject {
 
     func removeIngredient(at offsets: IndexSet) {
         profile.availableIngredients.remove(atOffsets: offsets)
+    }
+
+    // MARK: - Reload (called after onboarding completes)
+
+    func reload() {
+        profile = storage.loadProfile()
+    }
+
+    // MARK: - Nutrition Targets
+
+    func updateNutritionTargets(for member: FamilyMember, nutrition: NutritionMetrics, bodyMetrics: BodyMetrics) {
+        guard let index = profile.familyMembers.firstIndex(where: { $0.id == member.id }) else { return }
+        profile.familyMembers[index].nutritionTargets = nutrition
+        profile.familyMembers[index].bodyMetrics = bodyMetrics
+    }
+
+    func clearNutritionTargets(for member: FamilyMember) {
+        guard let index = profile.familyMembers.firstIndex(where: { $0.id == member.id }) else { return }
+        profile.familyMembers[index].nutritionTargets = nil
+        profile.familyMembers[index].bodyMetrics = nil
     }
 
     // MARK: - Persistence

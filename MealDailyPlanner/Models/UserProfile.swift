@@ -4,6 +4,7 @@ struct UserProfile: Codable {
     var familyMembers: [FamilyMember]
     var allergies: [String]
     var availableIngredients: [String]
+    var mealPreferences: String   // free-text sent to OpenAI for personalisation
 
     var familySize: Int { familyMembers.count }
 
@@ -17,6 +18,7 @@ struct UserProfile: Codable {
             FamilyMember(name: "Adult 2", isChild: false)
         ],
         allergies: [],
-        availableIngredients: []
+        availableIngredients: [],
+        mealPreferences: ""
     )
 }

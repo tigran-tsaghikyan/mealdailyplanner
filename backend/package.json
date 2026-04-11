@@ -1,0 +1,9 @@
+{
+  "name": "mealdailyplanner-api",
+  "version": "1.0.0",
+  "description": "API proxy for MealDailyPlanner iOS app",
+  "private": true,
+  "engines": {
+    "node": ">=18"
+  }
+}
