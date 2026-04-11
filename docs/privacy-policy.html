@@ -9,39 +9,60 @@
         h1 { font-size: 24px; margin-bottom: 4px; }
         h2 { font-size: 18px; margin-top: 28px; }
         p { margin: 12px 0; }
+        ul { margin: 12px 0; }
         .date { color: #666; font-size: 14px; margin-bottom: 24px; }
+        .highlight { background: #f5f5f7; border-left: 3px solid #007aff; padding: 12px 16px; border-radius: 4px; margin: 16px 0; }
     </style>
 </head>
 <body>
     <h1>Privacy Policy</h1>
-    <p class="date">Effective Date: March 24, 2026</p>
+    <p class="date">Effective Date: April 12, 2026</p>
 
     <p>Meal Daily Planner ("we", "our", or "the app") is committed to protecting your privacy. This Privacy Policy explains how the app handles your information.</p>
 
-    <h2>Information We Collect</h2>
-    <p>Meal Daily Planner does <strong>not</strong> collect, store, or transmit any personal data to external servers. All data remains on your device.</p>
-
-    <h2>Data Stored Locally on Your Device</h2>
-    <p>The app stores the following information locally on your device only:</p>
+    <h2>Information Stored Locally on Your Device</h2>
+    <p>The app stores the following information locally on your device using Apple's UserDefaults:</p>
     <ul>
-        <li>Family member names and preferences (adults/children)</li>
-        <li>Allergy information you provide</li>
+        <li>Family member names and adult/child status</li>
+        <li>Allergy and dietary restriction information you provide</li>
         <li>Available ingredients you enter</li>
+        <li>Meal preferences text you write</li>
+        <li>Nutrition targets and body metrics you enter (if configured)</li>
         <li>Subscription status and trial start date</li>
+        <li>Daily meal plan (cached for the current day)</li>
     </ul>
-    <p>This data is stored using Apple's UserDefaults and is never transmitted off your device.</p>
+
+    <h2>Data Sent to AI Service for Meal Plan Generation</h2>
+    <div class="highlight">
+        <p><strong>When generating your daily meal plan</strong>, the app sends the following information to our secure backend server, which forwards it to OpenAI's API to produce your personalised meal plan:</p>
+        <ul>
+            <li>Family member first names and whether each is an adult or child</li>
+            <li>Allergy and dietary restriction information</li>
+            <li>Available ingredient preferences</li>
+            <li>Meal preferences text you have entered</li>
+            <li>The current date (for meal variety)</li>
+        </ul>
+        <p><strong>This data is used solely to generate your meal plan.</strong> It is not stored, logged, sold, or used for any other purpose by us or our backend. No user account, email address, device identifier, or location is ever transmitted.</p>
+        <p>OpenAI processes this data according to their own privacy policy: <a href="https://openai.com/privacy">openai.com/privacy</a></p>
+    </div>
+    <p>If the device has no internet connection, meal plans are generated entirely on-device and no data is sent anywhere.</p>
 
     <h2>Third-Party Services</h2>
-    <p>The app does not use any third-party analytics, advertising, or tracking services. The only external service used is Apple's StoreKit for processing in-app subscriptions, which is governed by Apple's own privacy policy.</p>
+    <p>The app uses the following external services:</p>
+    <ul>
+        <li><strong>Apple StoreKit</strong> — for processing in-app subscriptions. Governed by Apple's privacy policy.</li>
+        <li><strong>OpenAI API</strong> — for AI meal plan generation (see section above). Governed by OpenAI's privacy policy.</li>
+    </ul>
+    <p>The app does <strong>not</strong> use any analytics, advertising, or tracking services.</p>
 
     <h2>Subscriptions</h2>
     <p>Subscription purchases are processed entirely through Apple's App Store. We do not have access to your payment information. Subscription management is handled by Apple.</p>
 
     <h2>Children's Privacy</h2>
-    <p>The app does not knowingly collect personal information from children under 13. Family member names entered are stored locally and never shared.</p>
+    <p>The app is designed for family use and allows adding child family members by first name. Child names may be included in meal plan generation requests sent to OpenAI (as described above) solely to tailor portion sizes. No other information about children is collected or transmitted. We do not knowingly collect personal data from children under 13 beyond what is described in this policy.</p>
 
     <h2>Data Deletion</h2>
-    <p>Since all data is stored locally on your device, you can delete all app data by uninstalling the app.</p>
+    <p>All locally stored data can be deleted by uninstalling the app. Data sent to OpenAI for meal plan generation is not retained by us after the response is received.</p>
 
     <h2>Changes to This Policy</h2>
     <p>We may update this Privacy Policy from time to time. Any changes will be reflected on this page with an updated effective date.</p>
