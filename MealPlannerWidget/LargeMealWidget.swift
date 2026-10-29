@@ -6,56 +6,40 @@ struct LargeMealWidgetView: View {
     let page: Int
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
+        VStack(alignment: .leading, spacing: 0) {
             HStack {
-                Text(meal.label)
-                    .font(.system(size: 12, weight: .bold))
-                    .foregroundStyle(Color.gray)
+                MealLabel(label: meal.label)
                 Spacer()
-                HStack(spacing: 4) {
-                    Image(systemName: "clock")
-                        .font(.system(size: 10))
-                    Text("\(meal.prepTime) min")
-                        .font(.system(size: 11))
-                }
-                .foregroundStyle(Color.gray)
+                PrepTimeLabel(minutes: meal.prepTime)
             }
 
             Text(meal.title)
-                .font(.system(size: 17, weight: .bold))
-                .foregroundStyle(Color(.label))
-                .lineLimit(1)
+                .font(.system(size: 18, weight: .bold, design: .rounded))
+                .tracking(-0.2)
+                .foregroundStyle(Palette.text)
+                .lineLimit(2)
+                .padding(.top, 6)
 
-            Divider()
-
-            VStack(alignment: .leading, spacing: 2) {
-                ForEach(meal.ingredients) { ingredient in
-                    HStack(spacing: 4) {
-                        Text(ingredient.name)
-                            .font(.system(size: 12))
-                            .foregroundStyle(Color(.label))
-                            .lineLimit(1)
-                        Spacer()
-                        Text(ingredient.scaled(for: 1.0))
-                            .font(.system(size: 11))
-                            .foregroundStyle(Color.gray)
+            section {
+                VStack(alignment: .leading, spacing: 6) {
+                    ForEach(meal.ingredients.prefix(5)) { ingredient in
+                        IngredientLine(ingredient: ingredient, size: 12.5)
                     }
                 }
             }
 
-            Divider()
-
-            VStack(alignment: .leading, spacing: 3) {
-                ForEach(Array(meal.steps.prefix(3).enumerated()), id: \.offset) { index, step in
-                    HStack(alignment: .top, spacing: 4) {
-                        Text("\(index + 1).")
-                            .font(.system(size: 11))
-                            .foregroundStyle(Color.gray)
-                            .frame(width: 16, alignment: .trailing)
-                        Text(step)
-                            .font(.system(size: 11))
-                            .foregroundStyle(Color(.label))
-                            .lineLimit(2)
+            section {
+                VStack(alignment: .leading, spacing: 8) {
+                    ForEach(Array(meal.steps.prefix(3).enumerated()), id: \.offset) { index, step in
+                        HStack(alignment: .top, spacing: 8) {
+                            Text("\(index + 1)")
+                                .font(.system(size: 12, weight: .bold, design: .rounded))
+                                .foregroundStyle(Palette.accentStrong)
+                            Text(step)
+                                .font(.system(size: 12, design: .rounded))
+                                .foregroundStyle(Palette.text)
+                                .lineLimit(2)
+                        }
                     }
                 }
             }
@@ -64,5 +48,16 @@ struct LargeMealWidgetView: View {
 
             MealNavigationBar(currentPage: page, compact: false)
         }
+    }
+
+    private func section<Content: View>(@ViewBuilder _ content: () -> Content) -> some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Rectangle()
+                .fill(Palette.divider)
+                .frame(height: 1)
+            content()
+                .padding(.top, 12)
+        }
+        .padding(.top, 12)
     }
 }

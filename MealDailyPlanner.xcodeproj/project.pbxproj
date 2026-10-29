@@ -31,6 +31,8 @@
 		AA000022 /* AppTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000022 /* AppTheme.swift */; };
 		AA000023 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AB000023 /* Assets.xcassets */; };
 		AA000024 /* SharedTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000024 /* SharedTypes.swift */; };
+		AA000080 /* Palette.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000080 /* Palette.swift */; };
+		AA000081 /* Palette.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000080 /* Palette.swift */; };
 		AA000025 /* SubscriptionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000025 /* SubscriptionManager.swift */; };
 		AA000026 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000026 /* PaywallView.swift */; };
 		AA000030 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB000030 /* WidgetKit.framework */; };
@@ -102,6 +104,7 @@
 		AB000022 /* AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
 		AB000023 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AB000024 /* SharedTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedTypes.swift; sourceTree = "<group>"; };
+		AB000080 /* Palette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Palette.swift; sourceTree = "<group>"; };
 		AB000025 /* SubscriptionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionManager.swift; sourceTree = "<group>"; };
 		AB000026 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
 		AB000030 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
@@ -284,6 +287,7 @@
 			isa = PBXGroup;
 			children = (
 				AB000024 /* SharedTypes.swift */,
+				AB000080 /* Palette.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -428,6 +432,7 @@
 				AA000021 /* StorageManager.swift in Sources */,
 				AA000022 /* AppTheme.swift in Sources */,
 				AA000024 /* SharedTypes.swift in Sources */,
+				AA000080 /* Palette.swift in Sources */,
 				AA000025 /* SubscriptionManager.swift in Sources */,
 				AA000026 /* PaywallView.swift in Sources */,
 				AA000050 /* NutritionMetrics.swift in Sources */,
@@ -452,6 +457,7 @@
 				AA000035 /* MediumMealWidget.swift in Sources */,
 				AA000036 /* LargeMealWidget.swift in Sources */,
 				AA000037 /* SharedTypes.swift in Sources */,
+				AA000081 /* Palette.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

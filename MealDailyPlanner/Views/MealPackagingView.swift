@@ -41,11 +41,11 @@ struct MealPackagingView: View {
                             Text("Safe defaults")
                                 .font(.system(size: 11, weight: .medium))
                         }
-                        .foregroundColor(.green)
+                        .foregroundColor(Palette.accentText)
                         .padding(.horizontal, 7)
                         .padding(.vertical, 3)
-                        .background(Color.green.opacity(0.12))
-                        .cornerRadius(6)
+                        .background(Palette.accentSoft)
+                        .clipShape(Capsule())
                     }
 
                     Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
@@ -66,18 +66,18 @@ struct MealPackagingView: View {
                         HStack(spacing: AppTheme.spacingSM) {
                             Image(systemName: "checkmark.shield.fill")
                                 .font(.system(size: 14))
-                                .foregroundColor(.green)
+                                .foregroundColor(Palette.accentText)
                             VStack(alignment: .leading, spacing: 1) {
                                 Text("Children without targets use safe default portions")
                                     .font(.system(size: 12, weight: .medium))
-                                    .foregroundColor(.green)
+                                    .foregroundColor(Palette.accentText)
                                 Text("Set targets in Profile to personalise their portions.")
                                     .font(.system(size: 11))
                                     .foregroundColor(AppTheme.secondary)
                             }
                         }
                         .padding(AppTheme.spacingMD)
-                        .background(Color.green.opacity(0.08))
+                        .background(Palette.accentSoft.opacity(0.6))
                     }
 
                     // Per-member sections
@@ -86,7 +86,7 @@ struct MealPackagingView: View {
 
                         if index < portions.count - 1 {
                             Rectangle()
-                                .fill(Color(.separator).opacity(0.4))
+                                .fill(Palette.divider)
                                 .frame(height: 0.5)
                                 .padding(.leading, AppTheme.spacingMD)
                         }
@@ -108,14 +108,14 @@ struct MealPackagingView: View {
                 ZStack {
                     Circle()
                         .fill(portion.isDefaultPortion
-                              ? Color.green.opacity(0.12)
-                              : Color(.tertiarySystemFill))
+                              ? Palette.accentSoft
+                              : Palette.fill)
                         .frame(width: 28, height: 28)
 
                     if portion.isDefaultPortion {
                         Image(systemName: "checkmark.shield.fill")
                             .font(.system(size: 12))
-                            .foregroundColor(.green)
+                            .foregroundColor(Palette.accentText)
                     } else {
                         Text(String(portion.member.name.prefix(1)).uppercased())
                             .font(.system(size: 12, weight: .bold))
@@ -133,7 +133,7 @@ struct MealPackagingView: View {
                          ? "Child · ½ safe default"
                          : portion.member.isChild ? "Child · personalised" : "Adult · personalised")
                         .font(.system(size: 11))
-                        .foregroundColor(portion.isDefaultPortion ? .green : AppTheme.secondary)
+                        .foregroundColor(portion.isDefaultPortion ? Palette.accentText : AppTheme.secondary)
                 }
 
                 Spacer()
@@ -145,8 +145,8 @@ struct MealPackagingView: View {
                         .foregroundColor(AppTheme.secondary)
                         .padding(.horizontal, 7)
                         .padding(.vertical, 3)
-                        .background(Color(.tertiarySystemFill))
-                        .cornerRadius(6)
+                        .background(Palette.fill)
+                        .clipShape(Capsule())
                 }
             }
 
@@ -169,7 +169,7 @@ struct MealPackagingView: View {
         .padding(.horizontal, AppTheme.spacingMD)
         .padding(.vertical, 10)
         .background(portion.isDefaultPortion
-                    ? Color.green.opacity(0.03)
+                    ? Palette.accentSoft.opacity(0.3)
                     : Color.clear)
     }
 }

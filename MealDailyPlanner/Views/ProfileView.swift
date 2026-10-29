@@ -4,160 +4,40 @@ struct ProfileView: View {
     @ObservedObject var viewModel: ProfileViewModel
     @ObservedObject var subscriptionManager: SubscriptionManager
     @State private var showPaywall = false
+    @AppStorage(AppearanceMode.storageKey) private var appearance: AppearanceMode = .auto
 
     var body: some View {
-        List {
-            // MARK: - Plan Status
-            Section {
+        ScrollView(showsIndicators: false) {
+            VStack(alignment: .leading, spacing: 20) {
+                Text("Profile")
+                    .font(.system(size: 30, weight: .bold, design: .rounded))
+                    .tracking(-0.5)
+                    .foregroundColor(Palette.text)
+                    .padding(.horizontal, 4)
+                    .padding(.top, 8)
+                    .padding(.bottom, -4)
+
+                // MARK: - Plan Status
                 PlanStatusCard(subscriptionManager: subscriptionManager)
-                    .listRowInsets(EdgeInsets())
-                    .listRowBackground(Color.clear)
                     .onTapGesture {
                         if subscriptionManager.status != .pro {
                             showPaywall = true
                         }
                     }
+
+                familySection
+                allergiesSection
+                ingredientsSection
+                preferencesSection
+                appearanceSection
             }
-
-            // MARK: - Family Members
-            Section {
-                ForEach(viewModel.profile.familyMembers) { member in
-                    FamilyMemberRow(
-                        member: member,
-                        onToggle: { viewModel.toggleChildStatus(for: member) },
-                        onRename: { viewModel.renameMember(member, to: $0) },
-                        onUpdateNutrition: { nutrition, bodyMetrics in
-                            viewModel.updateNutritionTargets(for: member, nutrition: nutrition, bodyMetrics: bodyMetrics)
-                        },
-                        onClearNutrition: { viewModel.clearNutritionTargets(for: member) }
-                    )
-                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                        if viewModel.canRemoveMember {
-                            Button(role: .destructive) {
-                                viewModel.removeMember(member)
-                            } label: {
-                                Label("Delete", systemImage: "trash")
-                            }
-                        }
-                    }
-                }
-
-                IngredientInputView(
-                    placeholder: "Member name",
-                    text: $viewModel.newMemberName,
-                    onAdd: viewModel.addMember,
-                    isDisabled: !viewModel.canAddMember
-                )
-            } header: {
-                HStack {
-                    Text("Family Members")
-                    Spacer()
-                    Text("\(viewModel.familySize)/\(ProfileViewModel.maxFamilyMembers)")
-                        .font(AppTheme.captionFont)
-                        .foregroundColor(AppTheme.secondary)
-                    ScalingInfoView(profile: viewModel.profile)
-                }
-            }
-
-            // MARK: - Allergies
-            Section {
-                if viewModel.profile.allergies.isEmpty {
-                    Text("No allergies added")
-                        .font(AppTheme.captionFont)
-                        .foregroundColor(AppTheme.secondary)
-                } else {
-                    ForEach(Array(viewModel.profile.allergies.enumerated()), id: \.offset) { index, allergy in
-                        EditableTextRow(
-                            text: allergy,
-                            onSave: { viewModel.editAllergy(allergy, to: $0) }
-                        )
-                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                            Button(role: .destructive) {
-                                viewModel.removeAllergy(allergy)
-                            } label: {
-                                Label("Delete", systemImage: "trash")
-                            }
-                        }
-                    }
-                }
-
-                IngredientInputView(
-                    placeholder: "Add allergy (e.g. peanuts)",
-                    text: $viewModel.newAllergyText,
-                    onAdd: viewModel.addAllergy,
-                    isDisabled: !viewModel.canAddAllergy
-                )
-            } header: {
-                HStack {
-                    Text("Allergies")
-                    Spacer()
-                    Text("\(viewModel.profile.allergies.count)/\(ProfileViewModel.maxAllergies)")
-                        .font(AppTheme.captionFont)
-                        .foregroundColor(AppTheme.secondary)
-                }
-            }
-
-            // MARK: - Available Ingredients
-            Section {
-                if viewModel.profile.availableIngredients.isEmpty {
-                    Text("No ingredients added — all recipes available")
-                        .font(AppTheme.captionFont)
-                        .foregroundColor(AppTheme.secondary)
-                } else {
-                    ForEach(Array(viewModel.profile.availableIngredients.enumerated()), id: \.offset) { index, ingredient in
-                        EditableTextRow(
-                            text: ingredient,
-                            onSave: { viewModel.editIngredient(ingredient, to: $0) }
-                        )
-                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                            Button(role: .destructive) {
-                                viewModel.removeIngredient(ingredient)
-                            } label: {
-                                Label("Delete", systemImage: "trash")
-                            }
-                        }
-                    }
-                }
-
-                IngredientInputView(
-                    placeholder: "Add ingredient (e.g. chicken)",
-                    text: $viewModel.newIngredientText,
-                    onAdd: viewModel.addIngredient,
-                    isDisabled: !viewModel.canAddIngredient
-                )
-            } header: {
-                HStack {
-                    Text("Available Ingredients")
-                    Spacer()
-                    Text("\(viewModel.profile.availableIngredients.count)/\(ProfileViewModel.maxIngredients)")
-                        .font(AppTheme.captionFont)
-                        .foregroundColor(AppTheme.secondary)
-                }
-            }
-
-            // MARK: - Meal Preferences
-            Section {
-                ZStack(alignment: .topLeading) {
-                    if viewModel.mealPreferencesText.isEmpty {
-                        Text("e.g. We prefer Mediterranean food, quick meals, no spicy dishes…")
-                            .font(AppTheme.bodyFont)
-                            .foregroundColor(Color(.placeholderText))
-                            .padding(.top, 8)
-                            .padding(.leading, 4)
-                            .allowsHitTesting(false)
-                    }
-                    TextEditor(text: $viewModel.mealPreferencesText)
-                        .font(AppTheme.bodyFont)
-                        .frame(minHeight: 80)
-                }
-            } header: {
-                Text("Meal Preferences")
-            } footer: {
-                Text("Sent to AI to personalise your daily meal plan.")
-                    .font(AppTheme.captionFont)
-            }
+            .padding(.horizontal, AppTheme.spacingMD)
+            .padding(.top, 8)
+            .padding(.bottom, 110)
         }
-        .listStyle(.insetGrouped)
+        .scrollDismissesKeyboard(.interactively)
+        .statusBarScrim()
+        .background(Palette.background.ignoresSafeArea())
         .sheet(isPresented: $showPaywall) {
             NavigationStack {
                 PaywallView(subscriptionManager: subscriptionManager)
@@ -169,46 +49,218 @@ struct ProfileView: View {
             }
         }
     }
+
+    // MARK: - Family Members
+
+    private var familySection: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            VStack(spacing: 0) {
+                ForEach(viewModel.profile.familyMembers) { member in
+                    FamilyMemberRow(
+                        member: member,
+                        onSetChild: { isChild in
+                            if member.isChild != isChild { viewModel.toggleChildStatus(for: member) }
+                        },
+                        onRename: { viewModel.renameMember(member, to: $0) },
+                        onUpdateNutrition: { nutrition, bodyMetrics in
+                            viewModel.updateNutritionTargets(for: member, nutrition: nutrition, bodyMetrics: bodyMetrics)
+                        },
+                        onClearNutrition: { viewModel.clearNutritionTargets(for: member) },
+                        onDelete: viewModel.canRemoveMember ? { viewModel.removeMember(member) } : nil
+                    )
+                    rowDivider
+                }
+
+                IngredientInputView(
+                    placeholder: "Member name",
+                    text: $viewModel.newMemberName,
+                    onAdd: viewModel.addMember,
+                    isDisabled: !viewModel.canAddMember
+                )
+                .padding(.horizontal, 16)
+                .padding(.vertical, 12)
+            }
+            .softCard()
+
+            HStack(spacing: 0) {
+                Text("Cooking for ")
+                Text("\(DailyPlanView.formatServings(viewModel.profile.scalingMultiplier)) portions")
+                    .fontWeight(.semibold)
+                    .foregroundColor(Palette.accentStrong)
+                Text(" — adults ×1.0, children ×0.5")
+            }
+            .font(.system(size: 12, design: .rounded))
+            .foregroundColor(Palette.textSecondary)
+            .padding(.horizontal, 4)
+        }
+        .sectionHeader("Family", trailing: "\(viewModel.familySize) of \(ProfileViewModel.maxFamilyMembers)")
+    }
+
+    // MARK: - Allergies
+
+    private var allergiesSection: some View {
+        chipCard(
+            items: viewModel.profile.allergies,
+            emptyText: "No allergies added",
+            onRemove: viewModel.removeAllergy,
+            input: IngredientInputView(
+                placeholder: "Add allergy (e.g. peanuts)",
+                text: $viewModel.newAllergyText,
+                onAdd: viewModel.addAllergy,
+                isDisabled: !viewModel.canAddAllergy
+            )
+        )
+        .sectionHeader("Allergies", trailing: "\(viewModel.profile.allergies.count) of \(ProfileViewModel.maxAllergies)")
+    }
+
+    // MARK: - Available Ingredients
+
+    private var ingredientsSection: some View {
+        chipCard(
+            items: viewModel.profile.availableIngredients,
+            emptyText: "Nothing added — all recipes available",
+            onRemove: viewModel.removeIngredient,
+            input: IngredientInputView(
+                placeholder: "Add ingredient (e.g. chicken)",
+                text: $viewModel.newIngredientText,
+                onAdd: viewModel.addIngredient,
+                isDisabled: !viewModel.canAddIngredient
+            )
+        )
+        .sectionHeader("Available ingredients", trailing: "\(viewModel.profile.availableIngredients.count) of \(ProfileViewModel.maxIngredients)")
+    }
+
+    private func chipCard(
+        items: [String],
+        emptyText: String,
+        onRemove: @escaping (String) -> Void,
+        input: IngredientInputView
+    ) -> some View {
+        VStack(alignment: .leading, spacing: 12) {
+            if items.isEmpty {
+                Text(emptyText)
+                    .font(.system(size: 13, design: .rounded))
+                    .foregroundColor(Palette.textSecondary)
+            } else {
+                FlowLayout(spacing: 8) {
+                    ForEach(items, id: \.self) { item in
+                        RemovableChip(title: item) { onRemove(item) }
+                    }
+                }
+            }
+
+            Rectangle()
+                .fill(Palette.divider)
+                .frame(height: 1)
+
+            input
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 14)
+        .softCard()
+    }
+
+    // MARK: - Meal Preferences
+
+    private var preferencesSection: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            ZStack(alignment: .topLeading) {
+                if viewModel.mealPreferencesText.isEmpty {
+                    Text("e.g. We prefer Mediterranean food, quick meals, no spicy dishes…")
+                        .font(.system(size: 14, design: .rounded))
+                        .foregroundColor(Palette.textTertiary)
+                        .padding(.top, 8)
+                        .padding(.leading, 5)
+                        .allowsHitTesting(false)
+                }
+                TextEditor(text: $viewModel.mealPreferencesText)
+                    .font(.system(size: 14, design: .rounded))
+                    .foregroundColor(Palette.text)
+                    .scrollContentBackground(.hidden)
+                    .frame(minHeight: 80)
+            }
+            .padding(.horizontal, 11)
+            .padding(.vertical, 6)
+            .softCard()
+
+            Text("Sent to AI to personalise your daily meal plan.")
+                .font(.system(size: 12, design: .rounded))
+                .foregroundColor(Palette.textSecondary)
+                .padding(.horizontal, 4)
+        }
+        .sectionHeader("Meal preferences")
+    }
+
+    // MARK: - Appearance
+
+    private var appearanceSection: some View {
+        HStack(spacing: 12) {
+            ZStack {
+                RoundedRectangle(cornerRadius: AppTheme.iconRadius, style: .continuous)
+                    .fill(Palette.accentSoft)
+                    .frame(width: 34, height: 34)
+                Image(systemName: "circle.lefthalf.filled")
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundColor(Palette.accent)
+            }
+
+            VStack(alignment: .leading, spacing: 1) {
+                Text("Theme")
+                    .font(.system(size: 15, weight: .medium, design: .rounded))
+                    .foregroundColor(Palette.text)
+                Text("Follows system")
+                    .font(.system(size: 12, design: .rounded))
+                    .foregroundColor(Palette.textSecondary)
+            }
+
+            Spacer(minLength: 4)
+
+            PillSegment(
+                options: AppearanceMode.allCases.map {
+                    .init(value: $0, title: $0.title, icon: $0.icon, selectedText: Palette.accentStrong)
+                },
+                selection: appearance,
+                onSelect: { appearance = $0 }
+            )
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 14)
+        .softCard()
+        .sectionHeader("Appearance")
+    }
+
+    private var rowDivider: some View {
+        Rectangle()
+            .fill(Palette.divider)
+            .frame(height: 1)
+    }
 }
 
-// MARK: - Editable Text Row
+// MARK: - Removable Chip
 
-struct EditableTextRow: View {
-    let text: String
-    let onSave: (String) -> Void
-
-    @State private var isEditing = false
-    @State private var editText = ""
+struct RemovableChip: View {
+    let title: String
+    let onRemove: () -> Void
 
     var body: some View {
-        if isEditing {
-            HStack {
-                TextField("", text: $editText, onCommit: {
-                    onSave(editText)
-                    isEditing = false
-                })
-                .font(AppTheme.bodyFont)
-                .textFieldStyle(.plain)
-
-                Button {
-                    onSave(editText)
-                    isEditing = false
-                } label: {
-                    Image(systemName: "checkmark.circle.fill")
-                        .foregroundColor(AppTheme.primary)
-                }
-                .buttonStyle(.plain)
+        HStack(spacing: 7) {
+            Text(title)
+                .font(.system(size: 13, weight: .medium, design: .rounded))
+                .foregroundColor(Palette.text)
+            Button(action: onRemove) {
+                Image(systemName: "xmark")
+                    .font(.system(size: 9, weight: .bold))
+                    .foregroundColor(Palette.textSecondary)
+                    .frame(width: 16, height: 16)
+                    .contentShape(Rectangle())
             }
-        } else {
-            Text(text)
-                .font(AppTheme.bodyFont)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .contentShape(Rectangle())
-                .onTapGesture {
-                    editText = text
-                    isEditing = true
-                }
+            .buttonStyle(.plain)
+            .accessibilityLabel("Remove \(title)")
         }
+        .padding(.leading, 12)
+        .padding(.trailing, 8)
+        .padding(.vertical, 7)
+        .background(Capsule().fill(Palette.fill))
     }
 }
 
@@ -220,38 +272,36 @@ struct PlanStatusCard: View {
     private var isPro: Bool { subscriptionManager.status == .pro }
 
     var body: some View {
-        HStack(spacing: 14) {
+        HStack(spacing: 13) {
             // Icon
             ZStack {
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(isPro ? Color.primary : Color(.tertiarySystemFill))
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    .fill(Palette.accentSoft)
                     .frame(width: 44, height: 44)
 
-                Image(systemName: isPro ? "crown.fill" : "clock")
-                    .font(.system(size: 18))
-                    .foregroundColor(isPro ? Color(.systemBackground) : AppTheme.secondary)
+                Image(systemName: isPro ? "crown" : "clock")
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundColor(Palette.accent)
             }
 
             // Text
-            VStack(alignment: .leading, spacing: 3) {
+            VStack(alignment: .leading, spacing: 2) {
                 Text(subscriptionManager.status.rawValue)
-                    .font(.system(size: 17, weight: .semibold))
-                    .foregroundColor(AppTheme.primary)
+                    .font(.system(size: 16, weight: .semibold, design: .rounded))
+                    .foregroundColor(Palette.text)
 
-                switch subscriptionManager.status {
-                case .free:
-                    Text(subscriptionManager.trialRemainingText)
-                        .font(.system(size: 13))
-                        .foregroundColor(AppTheme.secondary)
-                case .expired:
-                    Text("Subscribe to continue")
-                        .font(.system(size: 13))
-                        .foregroundColor(AppTheme.secondary)
-                case .pro:
-                    Text(subscriptionManager.subscriptionExpirationText ?? "Active subscription")
-                        .font(.system(size: 13))
-                        .foregroundColor(AppTheme.secondary)
+                Group {
+                    switch subscriptionManager.status {
+                    case .free:
+                        Text(subscriptionManager.trialRemainingText)
+                    case .expired:
+                        Text("Subscribe to continue")
+                    case .pro:
+                        Text(subscriptionManager.subscriptionExpirationText ?? "Active subscription")
+                    }
                 }
+                .font(.system(size: 13, design: .rounded))
+                .foregroundColor(Palette.textSecondary)
             }
 
             Spacer()
@@ -259,48 +309,32 @@ struct PlanStatusCard: View {
             // Badge
             if isPro {
                 Text("Pro")
-                    .font(.system(size: 12, weight: .bold))
-                    .foregroundColor(Color(.systemBackground))
+                    .font(.system(size: 12, weight: .bold, design: .rounded))
+                    .foregroundColor(Palette.badgeText)
                     .padding(.horizontal, 10)
-                    .padding(.vertical, 5)
-                    .background(AppTheme.primary)
-                    .cornerRadius(8)
-            } else if subscriptionManager.status == .free {
-                HStack(spacing: 8) {
+                    .padding(.vertical, 4)
+                    .background(Capsule().fill(Palette.badge))
+            } else {
+                if subscriptionManager.status == .free {
                     // Trial progress ring
                     ZStack {
                         Circle()
-                            .stroke(Color(.tertiarySystemFill), lineWidth: 3)
-                            .frame(width: 32, height: 32)
+                            .stroke(Palette.accentSoft, lineWidth: 3)
                         Circle()
                             .trim(from: 0, to: trialProgress)
-                            .stroke(AppTheme.primary, style: StrokeStyle(lineWidth: 3, lineCap: .round))
-                            .frame(width: 32, height: 32)
+                            .stroke(Palette.accent, style: StrokeStyle(lineWidth: 3, lineCap: .round))
                             .rotationEffect(.degrees(-90))
                     }
-                    Image(systemName: "chevron.right")
-                        .font(.system(size: 12, weight: .semibold))
-                        .foregroundColor(AppTheme.secondary)
+                    .frame(width: 30, height: 30)
                 }
-            } else {
-                // Expired state
                 Image(systemName: "chevron.right")
                     .font(.system(size: 12, weight: .semibold))
-                    .foregroundColor(AppTheme.secondary)
+                    .foregroundColor(Palette.textTertiary)
             }
         }
-        .padding(14)
-        .background(
-            RoundedRectangle(cornerRadius: 14)
-                .fill(Color(.systemBackground))
-                .shadow(color: Color.black.opacity(0.06), radius: 8, x: 0, y: 2)
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: 14)
-                .stroke(isPro ? Color.primary.opacity(0.15) : Color(.separator).opacity(0.4), lineWidth: 1)
-        )
-        .padding(.horizontal, 4)
-        .padding(.vertical, 6)
+        .padding(16)
+        .softCard()
+        .contentShape(Rectangle())
     }
 
     private var trialProgress: CGFloat {

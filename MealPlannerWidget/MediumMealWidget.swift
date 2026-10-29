@@ -7,50 +7,38 @@ struct MediumMealWidgetView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            HStack(spacing: 12) {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(meal.label)
-                        .font(.system(size: 11, weight: .bold))
-                        .foregroundStyle(Color.gray)
+            HStack(spacing: 16) {
+                VStack(alignment: .leading, spacing: 0) {
+                    MealLabel(label: meal.label)
 
                     Text(meal.title)
-                        .font(.system(size: 15, weight: .bold))
-                        .foregroundStyle(Color(.label))
-                        .lineLimit(2)
+                        .font(.system(size: 15, weight: .semibold, design: .rounded))
+                        .foregroundStyle(Palette.text)
+                        .lineLimit(3)
+                        .padding(.top, 6)
 
-                    Spacer()
+                    Spacer(minLength: 4)
 
-                    HStack(spacing: 4) {
-                        Image(systemName: "clock")
-                            .font(.system(size: 10))
-                        Text("\(meal.prepTime) min")
-                            .font(.system(size: 11))
-                    }
-                    .foregroundStyle(Color.gray)
+                    PrepTimeLabel(minutes: meal.prepTime)
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
 
-                Divider()
+                Rectangle()
+                    .fill(Palette.divider)
+                    .frame(width: 1)
 
-                VStack(alignment: .leading, spacing: 3) {
+                VStack(alignment: .leading, spacing: 6) {
                     ForEach(meal.ingredients.prefix(3)) { ingredient in
-                        HStack(spacing: 4) {
-                            Text(ingredient.name)
-                                .font(.system(size: 12))
-                                .foregroundStyle(Color(.label))
-                                .lineLimit(1)
-                            Spacer()
-                            Text(ingredient.scaled(for: 1.0))
-                                .font(.system(size: 11))
-                                .foregroundStyle(Color.gray)
-                        }
+                        IngredientLine(ingredient: ingredient)
                     }
-                    Spacer()
+                    Spacer(minLength: 0)
                 }
+                .padding(.top, 2)
                 .frame(maxWidth: .infinity)
             }
 
             MealNavigationBar(currentPage: page, compact: false)
-                .padding(.top, 4)
+                .padding(.top, 10)
         }
     }
 }

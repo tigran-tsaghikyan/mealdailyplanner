@@ -137,25 +137,24 @@ struct MealNavigationBar: View {
     let currentPage: Int
     let compact: Bool
 
-    private let labels = ["Breakfast", "Lunch", "Dinner"]
-
     var body: some View {
         HStack(spacing: 0) {
             Button(intent: PreviousMealIntent()) {
                 Image(systemName: "chevron.left")
-                    .font(.system(size: compact ? 12 : 14, weight: .semibold))
-                    .foregroundStyle(Color(.label).opacity(0.6))
-                    .frame(width: compact ? 28 : 34, height: compact ? 28 : 34)
-                    .contentShape(Rectangle())
+                    .font(.system(size: compact ? 11 : 12, weight: .bold))
+                    .foregroundStyle(Palette.textSecondary)
+                    .frame(width: compact ? 24 : 30, height: compact ? 24 : 30)
+                    .background(Circle().fill(Palette.fill))
+                    .contentShape(Circle())
             }
             .buttonStyle(.plain)
 
             Spacer()
 
-            HStack(spacing: 6) {
+            HStack(spacing: 5) {
                 ForEach(0..<3, id: \.self) { index in
                     Circle()
-                        .fill(index == currentPage ? Color(.label) : Color.gray.opacity(0.4))
+                        .fill(index == currentPage ? Palette.accent : Palette.dotInactive)
                         .frame(width: 6, height: 6)
                 }
             }
@@ -164,13 +163,62 @@ struct MealNavigationBar: View {
 
             Button(intent: NextMealIntent()) {
                 Image(systemName: "chevron.right")
-                    .font(.system(size: compact ? 12 : 14, weight: .semibold))
-                    .foregroundStyle(Color(.label).opacity(0.6))
-                    .frame(width: compact ? 28 : 34, height: compact ? 28 : 34)
-                    .contentShape(Rectangle())
+                    .font(.system(size: compact ? 11 : 12, weight: .bold))
+                    .foregroundStyle(Palette.textSecondary)
+                    .frame(width: compact ? 24 : 30, height: compact ? 24 : 30)
+                    .background(Circle().fill(Palette.fill))
+                    .contentShape(Circle())
             }
             .buttonStyle(.plain)
         }
+    }
+}
+
+// MARK: - Shared Pieces
+
+struct MealLabel: View {
+    let label: String
+
+    var body: some View {
+        HStack(spacing: 5) {
+            Circle()
+                .fill(Palette.accent)
+                .frame(width: 6, height: 6)
+            Text(label)
+                .font(.system(size: 11, weight: .bold, design: .rounded))
+                .foregroundStyle(Palette.accentStrong)
+        }
+    }
+}
+
+struct PrepTimeLabel: View {
+    let minutes: Int
+
+    var body: some View {
+        HStack(spacing: 4) {
+            Image(systemName: "clock")
+                .font(.system(size: 10, weight: .semibold))
+            Text("\(minutes) min")
+                .font(.system(size: 11, weight: .medium, design: .rounded))
+        }
+        .foregroundStyle(Palette.textSecondary)
+    }
+}
+
+struct IngredientLine: View {
+    let ingredient: MealIngredient
+    var size: CGFloat = 12
+
+    var body: some View {
+        HStack(spacing: 4) {
+            Text(ingredient.name)
+                .foregroundStyle(Palette.text)
+                .lineLimit(1)
+            Spacer(minLength: 4)
+            Text(ingredient.scaled(for: 1.0))
+                .foregroundStyle(Palette.textSecondary)
+        }
+        .font(.system(size: size, design: .rounded))
     }
 }
 
@@ -204,11 +252,11 @@ struct MealWidgetView: View {
     private var emptyState: some View {
         VStack(spacing: 8) {
             Image(systemName: "fork.knife")
-                .font(.title2)
-                .foregroundStyle(Color.gray)
+                .font(.system(size: 20, weight: .medium))
+                .foregroundStyle(Palette.accent)
             Text("Set up your plan")
-                .font(.caption)
-                .foregroundStyle(Color.gray)
+                .font(.system(size: 12, weight: .medium, design: .rounded))
+                .foregroundStyle(Palette.textSecondary)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
@@ -222,7 +270,7 @@ struct MealPlannerWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: MealTimelineProvider()) { entry in
             MealWidgetView(entry: entry)
-                .containerBackground(Color(.systemBackground), for: .widget)
+                .containerBackground(Palette.card, for: .widget)
         }
         .configurationDisplayName("Meal Planner")
         .description("Shows your daily meals — tap arrows to switch")

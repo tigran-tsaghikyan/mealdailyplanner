@@ -7,32 +7,39 @@ struct CookingFlowView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             // Header
-            HStack(spacing: 8) {
-                Image(systemName: "flame.fill")
-                    .font(.system(size: 14))
-                    .foregroundColor(AppTheme.secondary)
+            HStack(spacing: 10) {
+                ZStack {
+                    RoundedRectangle(cornerRadius: AppTheme.iconRadius, style: .continuous)
+                        .fill(Palette.card)
+                        .frame(width: 34, height: 34)
+                    Image(systemName: "flame")
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundColor(Palette.accent)
+                }
 
-                Text("Cooking Plan")
-                    .font(.system(size: 13, weight: .semibold))
-                    .foregroundColor(AppTheme.secondary)
+                Text("Cooking plan")
+                    .font(.system(size: 13, weight: .medium, design: .rounded))
+                    .foregroundColor(Palette.textSecondary)
 
                 Spacer()
 
-                HStack(spacing: 4) {
-                    Image(systemName: "timer")
-                        .font(.system(size: 11))
-                    Text("\(totalTime) min total")
-                        .font(.system(size: 12, weight: .medium))
-                }
-                .foregroundColor(AppTheme.secondary)
-                .padding(.horizontal, 8)
-                .padding(.vertical, 4)
-                .background(Color(.tertiarySystemFill))
-                .cornerRadius(6)
+                Text("\(totalTime) min total")
+                    .font(.system(size: 12, weight: .medium, design: .rounded))
+                    .foregroundColor(Palette.badgeText)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 5)
+                    .background(Capsule().fill(Palette.card))
             }
             .padding(.horizontal, AppTheme.spacingMD)
             .padding(.top, AppTheme.spacingMD)
-            .padding(.bottom, 14)
+            .padding(.bottom, 4)
+
+            Text("Cook all three meals in one session — longest first.")
+                .font(.system(size: 13, design: .rounded))
+                .foregroundColor(Palette.textSecondary)
+                .padding(.horizontal, AppTheme.spacingMD)
+                .padding(.top, 6)
+                .padding(.bottom, 10)
 
             // Steps timeline
             VStack(alignment: .leading, spacing: 0) {
@@ -41,12 +48,12 @@ struct CookingFlowView: View {
                         // Timeline dot + line
                         VStack(spacing: 0) {
                             Circle()
-                                .fill(AppTheme.primary)
+                                .fill(Palette.accent)
                                 .frame(width: 8, height: 8)
                                 .padding(.top, 5)
                             if index < cookingFlow.count - 1 {
                                 Rectangle()
-                                    .fill(Color(.separator))
+                                    .fill(Palette.timeline)
                                     .frame(width: 1)
                                     .frame(maxHeight: .infinity)
                             }
@@ -56,24 +63,24 @@ struct CookingFlowView: View {
                         // Content
                         VStack(alignment: .leading, spacing: 2) {
                             Text(step.description)
-                                .font(.system(size: 14))
-                                .foregroundColor(AppTheme.primary)
+                                .font(.system(size: 14, design: .rounded))
+                                .foregroundColor(Palette.text)
                                 .fixedSize(horizontal: false, vertical: true)
 
                             Text("\(step.durationMinutes) min")
-                                .font(.system(size: 12))
-                                .foregroundColor(AppTheme.secondary)
+                                .font(.system(size: 12, design: .rounded))
+                                .foregroundColor(Palette.textSecondary)
                         }
                         .padding(.bottom, index < cookingFlow.count - 1 ? 14 : 0)
 
-                        Spacer()
+                        Spacer(minLength: 0)
                     }
                 }
             }
             .padding(.horizontal, AppTheme.spacingMD)
-            .padding(.bottom, AppTheme.spacingMD)
+            .padding(.top, 4)
+            .padding(.bottom, 18)
         }
-        .background(Color(.systemBackground))
-        .cornerRadius(16)
+        .softCard(Palette.highlight, shadow: .clear)
     }
 }

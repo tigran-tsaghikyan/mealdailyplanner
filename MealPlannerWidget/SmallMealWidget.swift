@@ -6,28 +6,22 @@ struct SmallMealWidgetView: View {
     let page: Int
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(meal.label)
-                .font(.system(size: 12, weight: .bold))
-                .foregroundStyle(Color.gray)
+        VStack(alignment: .leading, spacing: 0) {
+            MealLabel(label: meal.label)
 
             Text(meal.title)
-                .font(.system(size: 15, weight: .bold))
-                .foregroundStyle(Color(.label))
-                .lineLimit(2)
+                .font(.system(size: 15, weight: .semibold, design: .rounded))
+                .foregroundStyle(Palette.text)
+                .lineLimit(3)
                 .fixedSize(horizontal: false, vertical: true)
+                .padding(.top, 6)
 
-            Spacer()
+            Spacer(minLength: 4)
 
-            HStack(spacing: 4) {
-                Image(systemName: "clock")
-                    .font(.system(size: 10))
-                Text("\(meal.prepTime) min")
-                    .font(.system(size: 11))
-            }
-            .foregroundStyle(Color.gray)
+            PrepTimeLabel(minutes: meal.prepTime)
 
             MealNavigationBar(currentPage: page, compact: true)
+                .padding(.top, 8)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }

@@ -11,8 +11,10 @@ struct IngredientInputView: View {
     }
 
     var body: some View {
-        HStack(spacing: AppTheme.spacingSM) {
-            TextField(placeholder, text: $text)
+        HStack(spacing: 10) {
+            TextField("", text: $text, prompt: Text(placeholder).foregroundColor(Palette.textTertiary))
+                .font(.system(size: 14, design: .rounded))
+                .foregroundColor(Palette.text)
                 .textFieldStyle(.plain)
                 .disabled(isDisabled)
                 .onSubmit {
@@ -20,10 +22,13 @@ struct IngredientInputView: View {
                 }
 
             Button(action: onAdd) {
-                Image(systemName: "plus.circle.fill")
-                    .foregroundColor(buttonDisabled ? AppTheme.secondary : AppTheme.primary)
-                    .font(.title3)
+                Image(systemName: "plus")
+                    .font(.system(size: 12, weight: .bold))
+                    .foregroundColor(buttonDisabled ? Palette.textTertiary : Palette.accent)
+                    .frame(width: 26, height: 26)
+                    .background(Circle().fill(Palette.accentSoft))
             }
+            .buttonStyle(.plain)
             .disabled(buttonDisabled)
         }
     }

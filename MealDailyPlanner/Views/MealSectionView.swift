@@ -3,108 +3,103 @@ import SwiftUI
 struct MealSectionView: View {
     let meal: Meal
     var familyMembers: [FamilyMember] = []
+    /// The meal for the current time of day gets the warm highlight and a "Now" badge.
+    var isCurrent: Bool = false
 
     private var mealIcon: String {
         switch meal.type {
-        case .breakfast: return "sunrise.fill"
-        case .lunch: return "sun.max.fill"
-        case .dinner: return "moon.stars.fill"
+        case .breakfast: return "sunrise"
+        case .lunch: return "sun.max"
+        case .dinner: return "moon.stars"
         }
     }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             // Header row: icon + type + time
-            HStack(spacing: 8) {
-                Image(systemName: mealIcon)
-                    .font(.system(size: 14))
-                    .foregroundColor(AppTheme.secondary)
+            HStack(spacing: 10) {
+                ZStack {
+                    RoundedRectangle(cornerRadius: AppTheme.iconRadius, style: .continuous)
+                        .fill(isCurrent ? Palette.accentSoft : Palette.fill)
+                        .frame(width: 34, height: 34)
+                    Image(systemName: mealIcon)
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundColor(isCurrent ? Palette.accent : Palette.textSecondary)
+                }
 
                 Text(meal.type.rawValue)
-                    .font(.system(size: 13, weight: .semibold))
-                    .foregroundColor(AppTheme.secondary)
+                    .font(.system(size: 13, weight: .medium, design: .rounded))
+                    .foregroundColor(Palette.textSecondary)
+
+                if isCurrent {
+                    Text("Now")
+                        .font(.system(size: 10, weight: .bold, design: .rounded))
+                        .foregroundColor(Palette.badgeText)
+                        .padding(.horizontal, 9)
+                        .padding(.vertical, 3)
+                        .background(RoundedRectangle(cornerRadius: 8, style: .continuous).fill(Palette.badge))
+                }
 
                 Spacer()
 
                 HStack(spacing: 4) {
                     Image(systemName: "clock")
-                        .font(.system(size: 11))
+                        .font(.system(size: 10, weight: .semibold))
                     Text("\(meal.prepTimeMinutes) min")
-                        .font(.system(size: 12, weight: .medium))
                 }
-                .foregroundColor(AppTheme.secondary)
-                .padding(.horizontal, 8)
-                .padding(.vertical, 4)
-                .background(Color(.tertiarySystemFill))
-                .cornerRadius(6)
+                .font(.system(size: 12, weight: .medium, design: .rounded))
+                .foregroundColor(isCurrent ? Palette.accentText : Palette.textSecondary)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 5)
+                .background(Capsule().fill(isCurrent ? Palette.accentSoft : Palette.fill))
             }
             .padding(.horizontal, AppTheme.spacingMD)
-            .padding(.top, AppTheme.spacingMD)
-            .padding(.bottom, 10)
+            .padding(.top, 14)
 
             // Title
             Text(meal.title)
-                .font(.system(size: 20, weight: .bold))
-                .foregroundColor(AppTheme.primary)
+                .font(.system(size: 21, weight: .semibold, design: .rounded))
+                .tracking(-0.3)
+                .foregroundColor(Palette.text)
+                .fixedSize(horizontal: false, vertical: true)
                 .padding(.horizontal, AppTheme.spacingMD)
-                .padding(.bottom, 14)
+                .padding(.top, 10)
+                .padding(.bottom, 12)
 
-            // Divider
-            Rectangle()
-                .fill(Color(.separator))
-                .frame(height: 0.5)
-                .padding(.horizontal, AppTheme.spacingMD)
-
-            // Ingredients
-            VStack(spacing: 0) {
-                ForEach(Array(meal.ingredients.enumerated()), id: \.element.id) { index, ingredient in
-                    HStack {
-                        Circle()
-                            .fill(Color(.tertiaryLabel))
-                            .frame(width: 4, height: 4)
+            // Ingredient chips
+            FlowLayout(spacing: 6) {
+                ForEach(meal.ingredients) { ingredient in
+                    HStack(spacing: 4) {
                         Text(ingredient.name)
-                            .font(.system(size: 14))
-                            .foregroundColor(AppTheme.primary)
-                        Spacer()
+                            .foregroundColor(Palette.text)
                         Text(ingredient.scaled(for: 1.0))
-                            .font(.system(size: 13, weight: .medium))
-                            .foregroundColor(AppTheme.secondary)
+                            .foregroundColor(Palette.textSecondary)
                     }
-                    .padding(.vertical, 6)
-                    .padding(.horizontal, AppTheme.spacingMD)
-
-                    if index < meal.ingredients.count - 1 {
-                        Rectangle()
-                            .fill(Color(.separator).opacity(0.5))
-                            .frame(height: 0.5)
-                            .padding(.leading, 28)
-                            .padding(.trailing, AppTheme.spacingMD)
-                    }
+                    .font(.system(size: 12, design: .rounded))
+                    .padding(.horizontal, 11)
+                    .padding(.vertical, 5)
+                    .background(Capsule().fill(isCurrent ? Palette.chipOnHighlight : Palette.fill))
                 }
             }
-            .padding(.top, 6)
+            .padding(.horizontal, AppTheme.spacingMD)
+            .padding(.bottom, 14)
 
-            // Divider
-            Rectangle()
-                .fill(Color(.separator))
-                .frame(height: 0.5)
-                .padding(.horizontal, AppTheme.spacingMD)
-                .padding(.top, 6)
+            divider
 
             // Steps
-            VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .leading, spacing: 9) {
                 ForEach(Array(meal.steps.enumerated()), id: \.offset) { index, step in
                     HStack(alignment: .top, spacing: 10) {
                         Text("\(index + 1)")
-                            .font(.system(size: 11, weight: .bold, design: .monospaced))
-                            .foregroundColor(Color(.systemBackground))
+                            .font(.system(size: 11, weight: .semibold, design: .rounded))
+                            .foregroundColor(isCurrent ? Palette.accentText : Palette.textSecondary)
                             .frame(width: 20, height: 20)
-                            .background(AppTheme.primary)
-                            .cornerRadius(10)
+                            .background(Circle().fill(isCurrent ? Palette.accentSoft : Palette.fill))
 
                         Text(step)
-                            .font(.system(size: 14))
-                            .foregroundColor(AppTheme.primary)
+                            .font(.system(size: 14, design: .rounded))
+                            .foregroundColor(Palette.text)
+                            .lineSpacing(2)
                             .fixedSize(horizontal: false, vertical: true)
                     }
                 }
@@ -115,15 +110,22 @@ struct MealSectionView: View {
 
             // Packaging (only shown when family has more than 1 member)
             if familyMembers.count > 1 {
-                Rectangle()
-                    .fill(Color(.separator))
-                    .frame(height: 0.5)
-                    .padding(.horizontal, AppTheme.spacingMD)
-
+                divider
                 MealPackagingView(meal: meal, familyMembers: familyMembers)
             }
         }
-        .background(Color(.systemBackground))
-        .cornerRadius(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .softCard(
+            isCurrent ? Palette.highlight : Palette.card,
+            shadow: isCurrent ? Palette.highlightShadow : Palette.cardShadow,
+            shadowRadius: isCurrent ? 12 : 9,
+            shadowY: isCurrent ? 8 : 4
+        )
+    }
+
+    private var divider: some View {
+        Rectangle()
+            .fill(isCurrent ? Palette.timeline.opacity(0.5) : Palette.divider)
+            .frame(height: 1)
     }
 }
