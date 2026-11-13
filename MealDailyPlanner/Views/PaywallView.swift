@@ -3,8 +3,8 @@ import SwiftUI
 struct PaywallView: View {
     @ObservedObject var subscriptionManager: SubscriptionManager
 
-    private let privacyPolicyURL = URL(string: "https://tigran-tsaghikyan.github.io/mealdailyplanner/privacy-policy.html")!
-    private let termsOfUseURL = URL(string: "https://tigran-tsaghikyan.github.io/mealdailyplanner/terms-of-use.html")!
+    private let privacyPolicyURL = URL(string: "https://docs.google.com/document/d/1xkPOTxaOh3zEF8RHc2cIte_lQ-ufpsK5o-95fkwjkpg/view")!
+    private let termsOfUseURL = URL(string: "https://docs.google.com/document/d/14r16iX-d6XL836N4ot-t46MZDtOH5ltjVWWPBHywO9A/view")!
 
     private let features = [
         "Daily breakfast, lunch & dinner plans",
