@@ -12,6 +12,14 @@ struct PaywallView: View {
         "Portions scaled to your family"
     ]
 
+    /// The paywall is shown both after the trial ends and from the Profile trial card while it's still running.
+    private var subtitle: String {
+        if subscriptionManager.status == .free {
+            return "You're on the free trial (\(subscriptionManager.trialRemainingText)). Subscribe now to keep a fresh daily plan coming for the whole family."
+        }
+        return "Your free trial has ended. Subscribe to keep generating a fresh daily plan for the whole family."
+    }
+
     var body: some View {
         ScrollView(showsIndicators: false) {
             VStack(spacing: 0) {
@@ -31,7 +39,7 @@ struct PaywallView: View {
                     .foregroundColor(Palette.text)
                     .multilineTextAlignment(.center)
 
-                Text("Your free trial has ended. Subscribe to keep generating a fresh daily plan for the whole family.")
+                Text(subtitle)
                     .font(.system(size: 15, design: .rounded))
                     .foregroundColor(Palette.textSecondary)
                     .lineSpacing(3)
